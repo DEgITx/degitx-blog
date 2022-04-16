@@ -13,8 +13,8 @@ I'm a software developer with **10** years of experience in commercial software 
 ### Experience 
 
 <figure class="alignright">2018 - now</figure>
-**Promwad** 
-**Senior Software Engineer** 
+**Promwad**  
+**Senior Software Engineer**  
 C, C++, Java, JS, Python.  
 I work with Embedded software and electronic devices.
 
@@ -23,7 +23,7 @@ I work with Embedded software and electronic devices.
 
 <figure class="alignright">2014 - 2018</figure>
 **Freelance and pet projects**  
-C++, JS. 
+C++, JS.  
 I develop [rats-search](https://github.com/DEgITx/rats-search) engine with more than 1000 subs and users.
 Develop own cutom [webserver engine](https://github.com/draftup/novastory) and tournament project based on it.
 Neural network
@@ -32,7 +32,7 @@ Neural network
 
 <figure class="alignright">2012 - 2014</figure>
 **ScienceSoft**  
-**Software Engineer** 
+**Software Engineer**  
 C, C++, Qt
 Torrent downloader, video downloader, custom browser, VOIP solutions.
 
