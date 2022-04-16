@@ -13,9 +13,9 @@ I'm a software developer with **10** years of experience in commercial software 
 ### Experience 
 
 <figure class="alignright">2018 - now</figure>
-**Promwad**  
-C, C++, Java, JS, Python. 
-**Senior Software Engineer**  
+**Promwad** 
+**Senior Software Engineer** 
+C, C++, Java, JS, Python.  
 I work with Embedded software and electronic devices.
 
 
