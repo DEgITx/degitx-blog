@@ -203,13 +203,26 @@
 	}
 
 	.wrapper {
+		padding: 15px 20px;
 		min-width: 0px;
 	}
 
 	.user-profile {
 		position: inherit !important;
 		max-width: initial !important;
+		margin-bottom: 15px;
 	}
 }
+
+@media only screen and (max-width: 520px) 
+{
+	.wrapper {
+		padding: 15px 7px;
+	}
+
+	.the-content .post {
+		padding: 40px 25px 80px !important;
+	}
+}	
 
 @import "responsive";
