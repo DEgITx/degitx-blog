@@ -13,7 +13,7 @@ I'm a software developer with **10** years of experience in commercial software 
 ### Experience 
 
 <figure class="alignright">2021 - now</figure>
-**Crestron** / **Jabil**
+**Crestron** / **Jabil**  
 **Senior Software Engineer**  
 C++, C, Java, Android  
 Implementation stuffs for QCOM-based panel.
@@ -21,7 +21,7 @@ Implementation stuffs for QCOM-based panel.
 ---
 
 <figure class="alignright">2021 - 2021</figure>
-**Octave Group** / **Promwad**
+**Octave Group** / **Promwad**  
 **Senior Software Engineer**  
 C++, C, Linux-kernel.  
 Bring-up of p241 based AMLogic board, frimeware flashing tool.
@@ -29,7 +29,7 @@ Bring-up of p241 based AMLogic board, frimeware flashing tool.
 ---
 
 <figure class="alignright">2020 - 2021</figure>
-**Liberty Global** / **Promwad**
+**Liberty Global** / **Promwad**  
 **Senior Software Engineer**  
 C++, Dart, JS, RDK, OpenGL, Python.  
 FPS optimizations on broadcom-based devices. FPS metering algorithm's developing. Porting Dart engine to broadcom-based device.
@@ -37,7 +37,7 @@ FPS optimizations on broadcom-based devices. FPS metering algorithm's developing
 ---
 
 <figure class="alignright">2018 - 2020</figure>
-**Ericsson** / **MediaKind** / **Promwad** 
+**Ericsson** / **MediaKind** / **Promwad**  
 **Software Engineer**  
 C++, TypeScript, JS, Ruby.  
 Supporting implementing Netflix-based solution on Broadcom-based devices.
