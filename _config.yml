@@ -5,7 +5,7 @@ description: C, C++, Java, Python, Performance
 avatar: /degitx.jpg
 favicon: /favicon.png
 twitter_handler: degitx
-analytics_code: UA-XXXXXXX-2
+analytics_code: G-NF83F10V5F
 disqus: degitx
 
 # Social Accounts
@@ -32,8 +32,10 @@ defaults:
       comments: "true"
 
 # Serving
-url: ""
+url: "https://blog.degitx.com"
 baseurl: ""
+plugins:
+  - jekyll-sitemap
 
 # Includes
 include: ["_pages"]
