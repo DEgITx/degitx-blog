@@ -1,0 +1,57 @@
+# General Settings
+name: Alexey Kasyanchuk
+job_title: Senior Software Developer
+description: C, C++, Java, Python, Performance
+avatar: /degitx.jpg
+favicon: /favicon.png
+twitter_handler: degitx
+analytics_code: UA-XXXXXXX-2
+disqus: degitx
+
+# Social Accounts
+social_networks:
+-  { name: twitter, url: 'http://twitter.com/DEgITx' }
+-  { name: github, url: 'http://github.com/DEgITx' }
+
+# Modules Settings
+show_categories: 1
+show_tags: 1
+show_email: 0
+show_rss: 1
+show_comments: 1
+show_menu: 1
+fixed_sidebar: 1
+
+# Defaults
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      comments: "true"
+
+# Serving
+url: ""
+baseurl: ""
+
+# Includes
+include: ["_pages"]
+
+# Outputting
+permalink: /:categories/:title.html
+category_dir: categories
+
+# Pagination
+paginate: 10
+paginate_path: "/page:num/"
+
+# Conversion
+markdown: kramdown
+excerpt_separator: <!--more-->
+
+# Assets Settings
+sass:
+  sass_dir: assets/partials
+  style: compressed
+
