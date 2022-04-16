@@ -12,12 +12,35 @@ I'm a software developer with **10** years of experience in commercial software 
 
 ### Experience 
 
-<figure class="alignright">2018 - now</figure>
-**Promwad**  
+<figure class="alignright">2021 - now</figure>
+**Crestron** / **Jabil**
 **Senior Software Engineer**  
-C, C++, Java, JS, Python.  
-I work with Embedded software and electronic devices.
+C++, C, Java, Android  
+Implementation stuffs for QCOM-based panel.
 
+---
+
+<figure class="alignright">2021 - 2021</figure>
+**Octave Group** / **Promwad**
+**Senior Software Engineer**  
+C++, C, Linux-kernel.  
+Bring-up of p241 based AMLogic board, frimeware flashing tool.
+
+---
+
+<figure class="alignright">2020 - 2021</figure>
+**Liberty Global** / **Promwad**
+**Senior Software Engineer**  
+C++, Dart, JS, RDK, OpenGL, Python.  
+FPS optimizations on broadcom-based devices. FPS metering algorithm's developing. Porting Dart engine to broadcom-based device.
+
+---
+
+<figure class="alignright">2018 - 2020</figure>
+**Ericsson** / **MediaKind** / **Promwad** 
+**Software Engineer**  
+C++, TypeScript, JS, Ruby.  
+Supporting implementing Netflix-based solution on Broadcom-based devices.
 
 ---
 
@@ -33,7 +56,7 @@ Neural network
 <figure class="alignright">2012 - 2014</figure>
 **ScienceSoft**  
 **Software Engineer**  
-C, C++, Qt
+C, C++, Qt  
 Torrent downloader, video downloader, custom browser, VOIP solutions.
 
 ### Articles
