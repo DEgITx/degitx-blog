@@ -17,3 +17,10 @@
         gtag('config', '{{site.analytics_code}}');
     </script>
 {% endif %}
+
+<script>
+const host_address = "{{site.url}}".replace('https://', '');
+if (window.location.host == host_address && window.location.protocol == "http:") {
+  window.location.protocol = "https:"
+}
+</script>
