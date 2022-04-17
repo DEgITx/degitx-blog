@@ -2,7 +2,7 @@
 layout: post
 date: 2020-07-15 11:32 PM
 title: "Android NDK AAC decoder ADTS alignment"
-description: Alexey Kasyanchuk DEgITx welcome words.
+description: Alexey Kasyanchuk NDK SoftAAC2 align basics.
 comments: true
 category: 
 - general
