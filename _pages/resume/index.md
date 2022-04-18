@@ -10,6 +10,11 @@ permalink: "/resume/"
 
 I'm a software developer with **10** years of experience in commercial software development.
 
+### Education
+
+**University:** BSU (Mathematics and Computer Science degree).  
+**Faculty:** Mechanics and Mathematics (Web technologies and computer modeling / Numerical methods and programming).  
+**Thesis:** Lagrange interpolation with Chebyshev systems of function.  
 ### Experience 
 
 <figure class="alignright">2021 - now</figure>
