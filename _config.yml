@@ -8,16 +8,19 @@ favicon: /favicon.png
 twitter_handler: degitx
 analytics_code: G-NF83F10V5F
 disqus: degitx
+email: degitx@gmail.com
 
 # Social Accounts
 social_networks:
 -  { name: twitter, url: 'http://twitter.com/DEgITx' }
 -  { name: github, url: 'http://github.com/DEgITx' }
+-  { name: linkedin, url: 'https://www.linkedin.com/in/alexey-kasyanchuk-60301456/' }
+-  { name: stack-overflow, url: 'https://stackoverflow.com/users/1315059/degitx' }
 
 # Modules Settings
 show_categories: 1
 show_tags: 1
-show_email: 0
+show_email: 1
 show_rss: 1
 show_comments: 1
 show_menu: 1
