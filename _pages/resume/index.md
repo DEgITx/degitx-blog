@@ -18,14 +18,16 @@ I'm a software developer with **10** years of experience in commercial software 
 ### Experience 
 
 <figure class="alignright">2021 - now</figure>
+<img src="/images/resume/crestron.png" alt="Crestron" width="350"/> <img src="/images/resume/jabil.png" alt="Jabil" width="170" style="position: relative; top: -12px; margin-left: 20px;"/>  
 **Crestron** / **Jabil**  
-**Senior Software Engineer**  
+**Senior Software Engineer**    
 C++, C, Java, Android  
 Implementation stuffs for QCOM-based panel.
 
 ---
 
 <figure class="alignright">2021 - 2021</figure>
+<img src="/images/resume/octave_group.png" alt="Octave Group" width="250"/>  
 **Octave Group** / **Promwad**  
 **Senior Software Engineer**  
 C++, C, Linux-kernel.  
@@ -34,6 +36,7 @@ Bring-up of p241 based AMLogic board, frimeware flashing tool.
 ---
 
 <figure class="alignright">2020 - 2021</figure>
+<img src="/images/resume/liberty.png" alt="Crestron" width="330"/>  
 **Liberty Global** / **Promwad**  
 **Senior Software Engineer**  
 C++, Dart, JS, RDK, OpenGL, Python.  
@@ -42,6 +45,7 @@ FPS optimizations on broadcom-based devices. FPS metering algorithm's developing
 ---
 
 <figure class="alignright">2018 - 2020</figure>
+<img src="/images/resume/ericsson.png" alt="Ericsson" width="230"/>  
 **Ericsson** / **MediaKind** / **Promwad**  
 **Software Engineer**  
 C++, TypeScript, JS, Ruby.  
@@ -59,6 +63,7 @@ Neural network
 ---
 
 <figure class="alignright">2012 - 2014</figure>
+<img src="/images/resume/sciencesoft.png" alt="ScienceSoft" width="250"/>  
 **ScienceSoft**  
 **Software Engineer**  
 C, C++, Qt  
