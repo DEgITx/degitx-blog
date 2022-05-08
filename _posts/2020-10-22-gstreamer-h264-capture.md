@@ -22,7 +22,18 @@ Before proceeding to code review, let’s look at what we can do without it.  GS
 * gst-launch-1.0 allows you to start any pipeline.
 GStreamer uses a decoding scheme where a stream passes through different components in series, from source to sink output. You can choose anything as a source: a file, a device, the output (sink) also may be a file, a screen, network outputs, and protocols (like RTP).
 
-A classic example of playing an mp4 file:
+Simple example of using gst-launch-1.0 to connect elements and play audio:
+{% highlight bash linenos %}
+gst-launch-1.0 filesrc location=/path/to/file.ogg ! decodebin ! alsasink
+{% endhighlight %}
+<figure>
+  <img src="/images/gstreamer/sinksrc.png" />
+  <figcaption>How to sink and src works</figcaption>
+</figure>
+
+Filesrc will open file, decodebin - decode it, and alsasink will output audio. 
+
+Another more complex example of playing an mp4 file:
 {% highlight bash linenos %}
 gst-launch-1.0 filesrc location=file.mp4 ! qtdemux ! h264parse ! avdec_h264 ! videoconvert ! autovideosink
 {% endhighlight %}
