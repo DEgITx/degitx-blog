@@ -341,10 +341,12 @@ encoder_cb_have_data (GstPad * pad,
  
   gst_memory_map(bufMem, &bufInfo, GST_MAP_READ);
  
-  // bufInfo.data, bufInfo.size
+  // bufInfo.data, bufInfo.size will contain encoded image data as output of out pipeline
   gst_memory_unmap(bufMem, &bufInfo);
   return GST_PAD_PROBE_OK;
 }
 {% endhighlight %}
 
 The callback has a similar structure. Now, we need to reach the buffer memory. First, we get GstBuffer, then a pointer of its memory using gst_buffer_get_memory by index 0 (as a rule, it is the only one involved). Finally, using gst_memory_map, we get the data buffer address bufInfo.data and its size bufInfo.size.
+
+Using same technique you can pass and recive encoded or decoded data with any complex pipeline using decoding elements or encoding elements or even using filters. I will recomend to prepare and test you pipeline using gst-launch-1.0 console utility at first, and then build same pipeline using native code.
