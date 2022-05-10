@@ -266,8 +266,8 @@ encoder_cb_need_data (GstElement *appsrc,
   GstFlowReturn ret;
   GstMapInfo map;
  
-  int size = 3 * 640 * 480; // typical rgb 640x480 image for example
-  uint8_t* image; // prepared image data (replace with your buffer)
+  int size = 1.5 * 640 * 480; // typical I420 640x480 image for example
+  uint8_t* image; // prepared I420 image data (replace with your buffer)
   
   // Copy image to the buffer
   buffer = gst_buffer_new_allocate (NULL, size, NULL);
