@@ -1,6 +1,6 @@
 ---
 layout: post
-date: 2022-07-23 11:32 PM
+date: 2022-07-22 11:32 PM
 title: "Crossplatform C++ Arch detection"
 description: arch x64_86 x86
 comments: true
