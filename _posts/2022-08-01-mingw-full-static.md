@@ -1,6 +1,6 @@
 ---
 layout: post
-date: 2022-08-01 00:05 AM
+date: 2022-07-30 00:05 AM
 title: "Mingw full static linkage instead of binary"
 description: Mingw full static linkage instead of binary. Remove dependency of libgcc_s_seh-1.dll or libgcc_s_dw2-1.dll
 comments: true
