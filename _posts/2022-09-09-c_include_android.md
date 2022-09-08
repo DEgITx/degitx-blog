@@ -1,6 +1,6 @@
 ---
 layout: post
-date: 2022-09-09 00:05 AM
+date: 2022-09-08 00:05 AM
 title: "C_INCLUDES must be under the source or output directories"
 description: C_INCLUDES must be under the source or output directories android error
 comments: true
