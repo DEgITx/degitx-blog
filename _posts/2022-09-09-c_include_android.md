@@ -23,5 +23,3 @@ LOCAL_C_INCLUDES += \
 {% endhighlight %}
 
 But at the same time be aware of symlinks! The problem can be if the folder created with symlinks! So aware of them.
-
-{% endhighlight %}
