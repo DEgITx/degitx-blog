@@ -28,8 +28,8 @@ tags:
 - amlvdec
 - thermal_zone
 ---
-One of the past projects was related to bringing up our newly developed board with the AmLogic s805x SoC CPU board. I will describe how the proccess of bringup is looks like, what was tested and we take a look how the AmLogic board flashing proccess is looks like for GXL platform (G12B and more recent looks very similar ).
-Our board itself is looks like it:
+One of the previous projects was related to bringing up our newly developed board with the AmLogic s805x SoC CPU board. I will describe how the proccess of bringing up looks like, what was tested and also we will take a look how the AmLogic board flashing proccess is carried out for GXL platform (G12B and more recent are very similar).
+This is our board:
 
 <figure>
   <img src="/images/s805x/1.png" />
@@ -51,6 +51,7 @@ $ make
 {% endhighlight %}
 
 After the proccess in complete everything will be at output/mesongxl_p241_32_kernel49/images with folowing parts:
+<!--more-->
 * boot.img - kernel
 * u-boot.bin - u-boot image
 * rootfs.ext2 - rootfs
