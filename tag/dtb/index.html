@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link href="https://fonts.googleapis.com/css?family=Saira&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Overpass+Mono|Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <title>Posts Tagged - dtb | Alexey Kasyanchuk &mdash; Senior Software Developer </title>
+    <meta property="og:title" content="Posts Tagged - dtb | Alexey Kasyanchuk &mdash; Senior Software Developer " />
+    <meta name="twitter:title" content="Posts Tagged - dtb | Alexey Kasyanchuk &mdash; Senior Software Developer " />
+
+    <meta name="description" content="Alexey Kasyanchuk - Senior Software Engineer with 10 years of expiriece in C/C++, Java, Python. I share expiriece.">
+    <meta name="description" property="og:description" content="Alexey Kasyanchuk - Senior Software Engineer with 10 years of expiriece in C/C++, Java, Python. I share expiriece." />
+    <meta name="twitter:description" content="Alexey Kasyanchuk - Senior Software Engineer with 10 years of expiriece in C/C++, Java, Python. I share expiriece." />
+    <meta name="keywords" content="C, C++, Java, Python, Performance, Android, Java, Git, Github, StackOverflow, algorithm, Qt, DEgITx, Kasyanchuk, Gitlab" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    
+    <meta name="twitter:site" content="@degitx" />
+    
+    <meta property="og:url" content="https://blog.degitx.com/tag/dtb/" />
+
+    <meta property="og:image" content="" />
+    <meta name="twitter:image" content="" />
+
+    <meta name="author" content="Alexey Kasyanchuk" />
+
+    <meta name="copyright" content="Copyright by Alexey Kasyanchuk. All Rights Reserved." />
+
+    <style>
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 300;
+            src: local('Roboto Light'), local('Roboto-Light'), url(https://fonts.gstatic.com/s/roboto/v15/Hgo13k-tfSpn0qi1SFdUfVtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v15/CWB0XYA8bzo0kSThX0UTuA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 700;
+            src: local('Roboto Bold'), local('Roboto-Bold'), url(https://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOFtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 900;
+            src: local('Roboto Black'), local('Roboto-Black'), url(https://fonts.gstatic.com/s/roboto/v15/mnpfi9pxYH-Go5UiibESIltXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 300;
+            src: local('Roboto Light Italic'), local('Roboto-LightItalic'), url(https://fonts.gstatic.com/s/roboto/v15/7m8l7TlFO-S3VkhHuR0at44P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 400;
+            src: local('Roboto Italic'), local('Roboto-Italic'), url(https://fonts.gstatic.com/s/roboto/v15/vPcynSL0qHq_6dX7lKVByfesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 700;
+            src: local('Roboto Bold Italic'), local('Roboto-BoldItalic'), url(https://fonts.gstatic.com/s/roboto/v15/t6Nd4cfPRhZP44Q5QAjcC44P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 900;
+            src: local('Roboto Black Italic'), local('Roboto-BlackItalic'), url(https://fonts.gstatic.com/s/roboto/v15/bmC0pGMXrhphrZJmniIZpY4P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+    </style>
+    
+    <link href="/favicon.png" rel="shortcut icon" type="image/x-icon" />
+    
+    <link rel="stylesheet" href="https://blog.degitx.com/assets/css/main.css">
+
+    <link rel="canonical" href="https://blog.degitx.com/tag/dtb/">
+
+    <link rel="alternate" type="application/rss+xml" title="" href="https://blog.degitx.com/feed.xml">
+
+    <script src="https://blog.degitx.com/assets/js/jquery-1.12.2.min.js"></script>
+<script src="https://blog.degitx.com/assets/js/backtotop.js"></script>
+<script src="https://blog.degitx.com/assets/js/lunr.min.js"></script>
+<script src="https://blog.degitx.com/assets/js/lunr-feed.js"></script>
+<script src="https://blog.degitx.com/assets/js/jquery.fitvids.js"></script>
+<script src="https://blog.degitx.com/assets/js/svg4everybody.min.js"></script>
+<script src="https://blog.degitx.com/assets/js/scripts.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NF83F10V5F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-NF83F10V5F');
+    </script>
+
+
+<script>
+const host_address = "https://blog.degitx.com".replace('https://', '');
+if (window.location.host == host_address && window.location.protocol == "http:") {
+  window.location.protocol = "https:"
+}
+</script>
+
+</head>
+
+    <body>
+        <div class="wrapper">
+            <aside class="user-profile fixed" role="complementary">
+    <div class="burger">
+        <input class="trigger hidden" id="toggleBurger" type="checkbox" />
+        <label for="toggleBurger">
+            <span>Navigation</span>
+        </label>
+    </div>
+
+    <div class="compact-header">
+        <a class="avatar" href="https://blog.degitx.com"><img alt="Avatar" src="/degitx.jpg" /></a>
+        <div class="my-info">
+            <strong class="my-name">Alexey Kasyanchuk</strong>
+            <span class="my-job-title">Senior Software Developer</span>
+        </div>
+    </div>
+
+    
+        
+        <div class="mainmenu">
+            <a href="/" >Blog</a>
+            
+                
+            
+                
+            
+                
+            
+                
+                    <a href="https://blog.degitx.com/resume/" >About</a>
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+        </div>
+        
+    
+
+    <p class="about-me">Alexey Kasyanchuk - Senior Software Engineer with 10 years of expiriece in C/C++, Java, Python. I share expiriece.</p>
+
+    <ul class="socials">
+        <li class="twitter"><a href="http://twitter.com/DEgITx"><svg title="twitter" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://blog.degitx.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li><li class="github"><a href="http://github.com/DEgITx"><svg title="github" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://blog.degitx.com/assets/svg/social-icons.svg#github-icon"></use></svg></a></li><li class="linkedin"><a href="https://www.linkedin.com/in/alexey-kasyanchuk-60301456/"><svg title="linkedin" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://blog.degitx.com/assets/svg/social-icons.svg#linkedin-icon"></use></svg></a></li><li class="stack-overflow"><a href="https://stackoverflow.com/users/1315059/degitx"><svg title="stack-overflow" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://blog.degitx.com/assets/svg/social-icons.svg#stack-overflow-icon"></use></svg></a></li>
+
+        
+            <li class="email"><a href="mailto:degitx@gmail.com"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://blog.degitx.com/assets/svg/social-icons.svg#email-icon"></use></svg></a></li>
+        
+
+        
+         <li class="rss-feed"><a href="https://blog.degitx.com/feed.xml"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://blog.degitx.com/assets/svg/social-icons.svg#rss-icon"></use></svg></a></li>
+        
+    </ul>
+</aside>
+
+            <main class="the-content" role="main">
+                
+                <h1>Posts Tagged - dtb</h1>
+
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+            <header class="post-header">
+                <ul>
+                    <li><time datetime="2022-11-15T00:05:00+00:00" itemprop="datePublished">15 Nov, 2022</time></li>
+                    
+                    <li class="cats">
+                        
+                            <a href="/categories/general/">general</a>
+                        
+                    </li>
+                    
+                </ul>
+                <h2 itemprop="name headline"><a href="https://blog.degitx.com/general/amlogic_s805x_board.html">AmLogic s805x GXL SoC board bring up</a></h2>
+            </header>
+
+            <div class="post-content">
+                <p>One of the previous projects was related to bringing up our newly developed board with the AmLogic s805x SoC CPU board. I will describe how the proccess of bringing up looks like, what was tested and also we will take a look how the AmLogic board flashing proccess is carried out for GXL platform (G12B and more recent are very similar).
+This is our board:</p>
+
+<figure>
+  <img src="/images/s805x/1.png" />
+  <figcaption>Our developed Z8 board with AmLogic s805x SoC</figcaption>
+</figure>
+
+<p>The first stage of bringup is to build image for reference board. Our case is p241. We took a113 sources for this. Build p241 reference sources:</p>
+
+<h2 id="build-image">Build image</h2>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="code"><pre><span class="c"># You need arm-linux-gnueabihf-gcc and aarch64-linux-gnu-gcc to be installed in system toolchains</span>
+<span class="nv">$ </span><span class="nb">sudo </span>apt-get <span class="nb">install </span>zlib1g zlib1g-dev
+<span class="nv">$ </span><span class="nb">source </span>buildroot/build/setenv.sh
+<span class="c"># Choose “mesongxl_p241_32_kernel49” // 37</span>
+<span class="nv">$ </span><span class="nb">ln</span> <span class="nt">-s</span> aml-4.9 kernel/aml-3.14
+<span class="nv">$ </span><span class="nb">ln</span> <span class="nt">-s</span> aml-4.9 hardware/aml-3.14
+<span class="nv">$ </span>make
+</pre></td></tr></tbody></table></code></pre></figure>
+
+<p>After the proccess in complete everything will be at output/mesongxl_p241_32_kernel49/images with folowing parts:</p>
+
+
+                
+                    <p><a href="/general/amlogic_s805x_board.html" role="button">Read More</a></p>
+                
+            </div>
+
+            <footer class="post-footer">
+                <div class="share">Share
+                    <ul class="social-networks">
+                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=AmLogic s805x GXL SoC board bring up&p[summary]=One of the previous projects was related to bringing up our newly developed board with the AmLogic s805x SoC CPU board. I will describe h...&p[url]=https://blog.degitx.com/general/amlogic_s805x_board.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://blog.degitx.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://blog.degitx.com/general/amlogic_s805x_board.html&text=One of the previous projects was related to bringing up our newly developed board with the AmLogic s805x SoC CPU board. I will describe h...&hashtags=C,uboot,u-boot,kernel,linux,amlogic,s805x,s905x,board,bringup,dtb,embedded,gpio,DS1307,i2cdump,i2c,gstreamer,alsa,amlvdec,thermal_zone," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://blog.degitx.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+                    </ul>
+                </div>
+                
+                <div class="tags">
+                    <ul>
+                        
+                        <li><a href="https://blog.degitx.com/tag/C">C</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/uboot">uboot</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/u-boot">u-boot</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/kernel">kernel</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/linux">linux</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/amlogic">amlogic</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/s805x">s805x</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/s905x">s905x</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/board">board</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/bringup">bringup</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/dtb">dtb</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/embedded">embedded</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/gpio">gpio</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/DS1307">DS1307</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/i2cdump">i2cdump</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/i2c">i2c</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/gstreamer">gstreamer</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/alsa">alsa</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/amlvdec">amlvdec</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/thermal_zone">thermal_zone</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </footer>
+        </article>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+
+            </main>
+        </div>
+    </body>
+</html>

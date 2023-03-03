@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link href="https://fonts.googleapis.com/css?family=Saira&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Overpass+Mono|Source+Code+Pro&display=swap" rel="stylesheet">
+
+    <title>Posts Tagged - algorithm | Alexey Kasyanchuk &mdash; Senior Software Developer </title>
+    <meta property="og:title" content="Posts Tagged - algorithm | Alexey Kasyanchuk &mdash; Senior Software Developer " />
+    <meta name="twitter:title" content="Posts Tagged - algorithm | Alexey Kasyanchuk &mdash; Senior Software Developer " />
+
+    <meta name="description" content="Alexey Kasyanchuk - Senior Software Engineer with 10 years of expiriece in C/C++, Java, Python. I share expiriece.">
+    <meta name="description" property="og:description" content="Alexey Kasyanchuk - Senior Software Engineer with 10 years of expiriece in C/C++, Java, Python. I share expiriece." />
+    <meta name="twitter:description" content="Alexey Kasyanchuk - Senior Software Engineer with 10 years of expiriece in C/C++, Java, Python. I share expiriece." />
+    <meta name="keywords" content="C, C++, Java, Python, Performance, Android, Java, Git, Github, StackOverflow, algorithm, Qt, DEgITx, Kasyanchuk, Gitlab" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    
+    <meta name="twitter:site" content="@degitx" />
+    
+    <meta property="og:url" content="https://blog.degitx.com/tag/algorithm/" />
+
+    <meta property="og:image" content="" />
+    <meta name="twitter:image" content="" />
+
+    <meta name="author" content="Alexey Kasyanchuk" />
+
+    <meta name="copyright" content="Copyright by Alexey Kasyanchuk. All Rights Reserved." />
+
+    <style>
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 300;
+            src: local('Roboto Light'), local('Roboto-Light'), url(https://fonts.gstatic.com/s/roboto/v15/Hgo13k-tfSpn0qi1SFdUfVtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v15/CWB0XYA8bzo0kSThX0UTuA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 700;
+            src: local('Roboto Bold'), local('Roboto-Bold'), url(https://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOFtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 900;
+            src: local('Roboto Black'), local('Roboto-Black'), url(https://fonts.gstatic.com/s/roboto/v15/mnpfi9pxYH-Go5UiibESIltXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 300;
+            src: local('Roboto Light Italic'), local('Roboto-LightItalic'), url(https://fonts.gstatic.com/s/roboto/v15/7m8l7TlFO-S3VkhHuR0at44P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 400;
+            src: local('Roboto Italic'), local('Roboto-Italic'), url(https://fonts.gstatic.com/s/roboto/v15/vPcynSL0qHq_6dX7lKVByfesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 700;
+            src: local('Roboto Bold Italic'), local('Roboto-BoldItalic'), url(https://fonts.gstatic.com/s/roboto/v15/t6Nd4cfPRhZP44Q5QAjcC44P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 900;
+            src: local('Roboto Black Italic'), local('Roboto-BlackItalic'), url(https://fonts.gstatic.com/s/roboto/v15/bmC0pGMXrhphrZJmniIZpY4P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+    </style>
+    
+    <link href="/favicon.png" rel="shortcut icon" type="image/x-icon" />
+    
+    <link rel="stylesheet" href="https://blog.degitx.com/assets/css/main.css">
+
+    <link rel="canonical" href="https://blog.degitx.com/tag/algorithm/">
+
+    <link rel="alternate" type="application/rss+xml" title="" href="https://blog.degitx.com/feed.xml">
+
+    <script src="https://blog.degitx.com/assets/js/jquery-1.12.2.min.js"></script>
+<script src="https://blog.degitx.com/assets/js/backtotop.js"></script>
+<script src="https://blog.degitx.com/assets/js/lunr.min.js"></script>
+<script src="https://blog.degitx.com/assets/js/lunr-feed.js"></script>
+<script src="https://blog.degitx.com/assets/js/jquery.fitvids.js"></script>
+<script src="https://blog.degitx.com/assets/js/svg4everybody.min.js"></script>
+<script src="https://blog.degitx.com/assets/js/scripts.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NF83F10V5F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-NF83F10V5F');
+    </script>
+
+
+<script>
+const host_address = "https://blog.degitx.com".replace('https://', '');
+if (window.location.host == host_address && window.location.protocol == "http:") {
+  window.location.protocol = "https:"
+}
+</script>
+
+</head>
+
+    <body>
+        <div class="wrapper">
+            <aside class="user-profile fixed" role="complementary">
+    <div class="burger">
+        <input class="trigger hidden" id="toggleBurger" type="checkbox" />
+        <label for="toggleBurger">
+            <span>Navigation</span>
+        </label>
+    </div>
+
+    <div class="compact-header">
+        <a class="avatar" href="https://blog.degitx.com"><img alt="Avatar" src="/degitx.jpg" /></a>
+        <div class="my-info">
+            <strong class="my-name">Alexey Kasyanchuk</strong>
+            <span class="my-job-title">Senior Software Developer</span>
+        </div>
+    </div>
+
+    
+        
+        <div class="mainmenu">
+            <a href="/" >Blog</a>
+            
+                
+            
+                
+            
+                
+            
+                
+                    <a href="https://blog.degitx.com/resume/" >About</a>
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+        </div>
+        
+    
+
+    <p class="about-me">Alexey Kasyanchuk - Senior Software Engineer with 10 years of expiriece in C/C++, Java, Python. I share expiriece.</p>
+
+    <ul class="socials">
+        <li class="twitter"><a href="http://twitter.com/DEgITx"><svg title="twitter" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://blog.degitx.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li><li class="github"><a href="http://github.com/DEgITx"><svg title="github" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://blog.degitx.com/assets/svg/social-icons.svg#github-icon"></use></svg></a></li><li class="linkedin"><a href="https://www.linkedin.com/in/alexey-kasyanchuk-60301456/"><svg title="linkedin" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://blog.degitx.com/assets/svg/social-icons.svg#linkedin-icon"></use></svg></a></li><li class="stack-overflow"><a href="https://stackoverflow.com/users/1315059/degitx"><svg title="stack-overflow" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://blog.degitx.com/assets/svg/social-icons.svg#stack-overflow-icon"></use></svg></a></li>
+
+        
+            <li class="email"><a href="mailto:degitx@gmail.com"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://blog.degitx.com/assets/svg/social-icons.svg#email-icon"></use></svg></a></li>
+        
+
+        
+         <li class="rss-feed"><a href="https://blog.degitx.com/feed.xml"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://blog.degitx.com/assets/svg/social-icons.svg#rss-icon"></use></svg></a></li>
+        
+    </ul>
+</aside>
+
+            <main class="the-content" role="main">
+                
+                <h1>Posts Tagged - algorithm</h1>
+
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+            <header class="post-header">
+                <ul>
+                    <li><time datetime="2020-07-15T23:32:00+00:00" itemprop="datePublished">15 Jul, 2020</time></li>
+                    
+                    <li class="cats">
+                        
+                            <a href="/categories/general/">general</a>
+                        
+                    </li>
+                    
+                </ul>
+                <h2 itemprop="name headline"><a href="https://blog.degitx.com/general/android-ndk-aac.html">Android NDK AAC decoder ADTS alignment</a></h2>
+            </header>
+
+            <div class="post-content">
+                <p>After a long thought, I finally decided to switch my blog articles to english, and continue to give some rare and mostly unintresting info in free form. And today we will talk more about Android, NDK and some undocumentated video/audio functionality, maybe will discover some new knowlage about AAC and maybe it will help your own problem, like it was for me.
+In a focus of this acrticle is Android AAC decoder, and a little detail how the decoding in android working behind NDK documentation.</p>
+
+<h3 id="amediacodec-using-steps">AMediaCodec using steps</h3>
+
+<p>First let take a very very surface look how to start decoding using NDK:</p>
+<ol>
+  <li>Create AMediaCodec using codec name.</li>
+  <li>Configure AMediaCodec via AMediaCodec_configure.</li>
+  <li>Ctart decoding AMediaCodec_start.</li>
+  <li>Give a buffer using AMediaCodec_getInputBuffer.</li>
+  <li>Back buffer with AMediaCodec_queueInputBuffer.</li>
+  <li>Repeat while you have an buffer ;).</li>
+</ol>
+
+<p>Looks very simple, and work good as well. I can end this article in this place, but I don’t tell you nothing about buffer requirenments and other stuffs, and in NDK/SDK also all simple like that. So what going on behind this android decoding? What if you getting some error with your buffer, or you don’t have sound in some rare cases? How the Android decoder works like, let take a look at AAC audio decoder as example. Let’s begin from simple.</p>
+
+<figure>
+	<img src="/images/ndk-acc/download.jpg" />
+	<figcaption>Android AAC decoder architecture</figcaption>
+</figure>
+
+<p>As you see on this bad jpeg picture :) Android have different implementation of AAC decoders as OMX components. But that’s not all, beside some software implemetation on some platforms existed hardware implementation, like on Broadcom chips. Keep at mind, and will transport to SoftAAC2 decoder. Let take a look deeper.</p>
+
+
+
+                
+                    <p><a href="/general/android-ndk-aac.html" role="button">Read More</a></p>
+                
+            </div>
+
+            <footer class="post-footer">
+                <div class="share">Share
+                    <ul class="social-networks">
+                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Android NDK AAC decoder ADTS alignment&p[summary]=After a long thought, I finally decided to switch my blog articles to english, and continue to give some rare and mostly unintresting inf...&p[url]=https://blog.degitx.com/general/android-ndk-aac.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://blog.degitx.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://blog.degitx.com/general/android-ndk-aac.html&text=After a long thought, I finally decided to switch my blog articles to english, and continue to give some rare and mostly unintresting inf...&hashtags=android,sdk,ndk,C++,aac,algorithm," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://blog.degitx.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+                    </ul>
+                </div>
+                
+                <div class="tags">
+                    <ul>
+                        
+                        <li><a href="https://blog.degitx.com/tag/android">android</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/sdk">sdk</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/ndk">ndk</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/C++">C++</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/aac">aac</a></li>
+                        
+                        <li><a href="https://blog.degitx.com/tag/algorithm">algorithm</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </footer>
+        </article>
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+
+            </main>
+        </div>
+    </body>
+</html>
