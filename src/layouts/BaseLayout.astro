@@ -1,0 +1,37 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Analytics from '../components/Analytics.astro';
+import { SITE } from '../consts.js';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  canonical?: string;
+  type?: 'website' | 'article' | 'profile';
+  publishedTime?: Date;
+  modifiedTime?: Date;
+  tags?: string[];
+  noindex?: boolean;
+  schema?: Record<string, unknown>[];
+}
+
+const props = Astro.props;
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <BaseHead {...props} />
+    <Analytics />
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <Header />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

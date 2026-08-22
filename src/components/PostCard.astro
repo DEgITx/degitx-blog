@@ -1,0 +1,69 @@
+---
+import type { Post } from '../utils/posts';
+import { formatDate, postPath, readingTime, tagSlug } from '../utils/posts';
+
+interface Props {
+  post: Post;
+  /** Renders the first card larger on the home page. */
+  featured?: boolean;
+}
+
+const { post, featured = false } = Astro.props;
+const { title, description, pubDate, tags } = post.data;
+const href = postPath(post);
+const minutes = readingTime(post.body ?? '');
+---
+
+<article
+  class:list={[
+    'group relative rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-elevated)] transition-all duration-300 ease-[var(--ease-out-quint)] hover:border-[var(--color-border-strong)] hover:shadow-[0_2px_24px_-8px_rgb(0_0_0/0.14)]',
+    featured ? 'p-7 sm:p-9' : 'p-6',
+  ]}
+>
+  <div
+    class="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-[var(--color-fg-subtle)]"
+  >
+    <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+    <span aria-hidden="true">&middot;</span>
+    <span>{minutes} min read</span>
+  </div>
+
+  <h2
+    class:list={[
+      'mt-3 font-semibold tracking-tight text-balance',
+      featured ? 'text-2xl sm:text-[1.75rem]/tight' : 'text-lg',
+    ]}
+  >
+    <a href={href} class="transition-colors group-hover:text-[var(--color-accent)]">
+      <!-- Stretched link: the whole card is the click target. -->
+      <span class="absolute inset-0" aria-hidden="true"></span>
+      {title}
+    </a>
+  </h2>
+
+  <p
+    class:list={[
+      'mt-2.5 leading-relaxed text-[var(--color-fg-muted)]',
+      featured ? 'text-base' : 'text-sm',
+    ]}
+  >
+    {description}
+  </p>
+
+  {
+    tags.length > 0 && (
+      <ul class="relative z-10 mt-5 flex flex-wrap gap-1.5">
+        {tags.slice(0, featured ? 6 : 4).map((tag) => (
+          <li>
+            <a
+              href={`/tags/${tagSlug(tag)}/`}
+              class="inline-block rounded-md border border-[var(--color-border)] px-2 py-0.5 font-mono text-[11px] text-[var(--color-fg-muted)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            >
+              {tag}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</article>

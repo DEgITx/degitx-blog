@@ -1,0 +1,55 @@
+---
+import { NAV, SITE } from '../consts.js';
+import ThemeToggle from './ThemeToggle.astro';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href.replace(/\/$/, ''));
+---
+
+<a
+  href="#main"
+  class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-[var(--color-accent)] focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-[var(--color-accent-fg)]"
+>
+  Skip to content
+</a>
+
+<header
+  class="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-bg)]/80 backdrop-blur-lg backdrop-saturate-150"
+>
+  <div class="container-page flex h-16 items-center justify-between gap-4">
+    <a
+      href="/"
+      class="group flex shrink-0 items-center gap-2.5 font-semibold tracking-tight"
+      aria-label={`${SITE.title} — home`}
+    >
+      <span
+        class="grid size-8 place-items-center rounded-lg bg-[var(--color-fg)] font-mono text-[13px] font-bold text-[var(--color-bg)] transition-transform duration-300 ease-[var(--ease-out-quint)] group-hover:-rotate-6"
+        aria-hidden="true">DX</span
+      >
+      <span class="hidden text-[15px] sm:inline">{SITE.title}</span>
+    </a>
+
+    <nav aria-label="Main" class="flex items-center gap-1">
+      {
+        NAV.map((item) => (
+          <a
+            href={item.href}
+            aria-current={isActive(item.href) ? 'page' : undefined}
+            class:list={[
+              'rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
+              isActive(item.href)
+                ? 'bg-[var(--color-surface)] text-[var(--color-fg)]'
+                : 'text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]',
+            ]}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <div class="ml-1 border-l border-[var(--color-border)] pl-1">
+        <ThemeToggle />
+      </div>
+    </nav>
+  </div>
+</header>

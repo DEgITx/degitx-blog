@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import Icon from '../../components/Icon.astro';
+import { SITE } from '../../consts.js';
+import type { Post, TagInfo } from '../../utils/posts';
+import { getPosts, getTags, getPostsByTag, postPath } from '../../utils/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const tags = await getTags(posts);
+
+  return Promise.all(
+    tags.map(async (tag) => ({
+      params: { tag: tag.slug },
+      props: { tag, posts: await getPostsByTag(tag.slug, posts) },
+    }))
+  );
+}
+
+interface Props {
+  tag: TagInfo;
+  posts: Post[];
+}
+
+const { tag, posts } = Astro.props;
+const url = `${SITE.url}/tags/${tag.slug}/`;
+
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    '@id': `${url}#page`,
+    url,
+    name: `${tag.name} articles`,
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: posts.length,
+      itemListElement: posts.map((post, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        url: `${SITE.url}${postPath(post)}`,
+        name: post.data.title,
+      })),
+    },
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Topics', item: `${SITE.url}/tags/` },
+      { '@type': 'ListItem', position: 3, name: tag.name, item: url },
+    ],
+  },
+];
+
+const plural = posts.length === 1 ? 'article' : 'articles';
+---
+
+<BaseLayout
+  title={`${tag.name} articles`}
+  description={`${posts.length} ${plural} tagged ${tag.name} by Alexey Kasyanchuk — practical notes from systems, embedded and multimedia engineering.`}
+  schema={schema}
+>
+  <div class="container-page py-14 sm:py-20">
+    <header>
+      <nav aria-label="Breadcrumb" class="text-sm">
+        <a
+          href="/tags/"
+          class="inline-flex items-center gap-1.5 text-[var(--color-fg-subtle)] transition-colors hover:text-[var(--color-fg)]"
+        >
+          <Icon name="arrow" size={14} class="rotate-180" />
+          All topics
+        </a>
+      </nav>
+
+      <h1 class="mt-6 text-3xl font-bold tracking-tight sm:text-4xl">
+        <span class="text-[var(--color-fg-subtle)]">#</span>{tag.name}
+      </h1>
+      <p class="mt-3 text-[var(--color-fg-muted)]">{posts.length} {plural}</p>
+    </header>
+
+    <div class="mt-10 grid gap-4 sm:grid-cols-2">
+      {posts.map((post) => <PostCard post={post} />)}
+    </div>
+  </div>
+</BaseLayout>

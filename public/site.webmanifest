@@ -1,0 +1,13 @@
+{
+  "name": "Alexey Kasyanchuk — Systems engineering notes",
+  "short_name": "DEgITx",
+  "description": "Engineering notes on C/C++, Android NDK, embedded Linux and multimedia.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#16181d",
+  "theme_color": "#16181d",
+  "icons": [
+    { "src": "/favicon.png", "sizes": "any", "type": "image/png", "purpose": "any" }
+  ]
+}

@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { getPosts } from '../utils/posts';
+import { postPath } from '../utils/posts';
+
+const recent = (await getPosts()).slice(0, 4);
+---
+
+<BaseLayout title="Page not found" description="This page doesn't exist." noindex>
+  <div class="container-prose py-24 text-center sm:py-32">
+    <p class="font-mono text-6xl font-bold text-[var(--color-fg-subtle)]">404</p>
+    <h1 class="mt-6 text-3xl font-bold tracking-tight">Page not found</h1>
+    <p class="mt-4 text-[var(--color-fg-muted)]">
+      The page you're after has moved or never existed. The blog was rebuilt in 2026 — old links
+      under <code class="font-mono text-sm">/general/</code> now redirect to
+      <code class="font-mono text-sm">/blog/</code>.
+    </p>
+
+    <a
+      href="/"
+      class="mt-8 inline-flex items-center gap-2 rounded-lg bg-[var(--color-fg)] px-4 py-2.5 text-sm font-medium text-[var(--color-bg)] transition-opacity hover:opacity-88"
+    >
+      Back home
+      <Icon name="arrow" size={16} />
+    </a>
+
+    <div class="mt-16 text-left">
+      <h2 class="text-xs font-semibold tracking-widest text-[var(--color-fg-subtle)] uppercase">
+        Recent posts
+      </h2>
+      <ul class="mt-4 divide-y divide-[var(--color-border)] border-y border-[var(--color-border)]">
+        {
+          recent.map((post) => (
+            <li>
+              <a
+                href={postPath(post)}
+                class="block py-3.5 font-medium transition-colors hover:text-[var(--color-accent)]"
+              >
+                {post.data.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</BaseLayout>

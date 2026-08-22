@@ -1,0 +1,163 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import Icon from '../components/Icon.astro';
+import { SITE, SOCIAL } from '../consts.js';
+import { getPosts, getTags } from '../utils/posts';
+
+const posts = await getPosts();
+const latest = posts.slice(0, 6);
+const tags = (await getTags(posts)).slice(0, 12);
+
+const schema = [
+  {
+    '@type': 'Blog',
+    '@id': `${SITE.url}/#blog`,
+    url: SITE.url,
+    name: SITE.title,
+    description: SITE.description,
+    inLanguage: SITE.lang,
+    author: { '@id': `${SITE.url}/#person` },
+    publisher: { '@id': `${SITE.url}/#person` },
+  },
+];
+
+const STACK = [
+  'C / C++',
+  'Android NDK',
+  'Embedded Linux',
+  'GStreamer',
+  'Qt',
+  'JavaScript',
+  'Python',
+  'Java',
+];
+---
+
+<BaseLayout
+  title={`${SITE.title} — ${SITE.tagline}`}
+  description={SITE.description}
+  schema={schema}
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden border-b border-[var(--color-border)]">
+    <div class="grid-backdrop pointer-events-none absolute inset-0" aria-hidden="true"></div>
+
+    <div class="container-page relative py-20 sm:py-28">
+      <div class="max-w-2xl">
+        <p
+          class="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-elevated)] px-3 py-1 font-mono text-xs text-[var(--color-fg-muted)]"
+        >
+          <span class="size-1.5 rounded-full bg-[var(--color-accent)]" aria-hidden="true"></span>
+          Senior Software Engineer &middot; Minsk
+        </p>
+
+        <h1 class="mt-6 text-4xl font-bold tracking-tight text-balance sm:text-5xl md:text-6xl">
+          Alexey Kasyanchuk
+        </h1>
+
+        <p class="mt-5 text-lg leading-relaxed text-[var(--color-fg-muted)] text-pretty">
+          I write about the layer most documentation skips — Android NDK internals, embedded
+          Linux bring-up, GStreamer pipelines, MinGW toolchains and the C++ details you only
+          discover by hitting them.
+        </p>
+
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a
+            href="/blog/"
+            class="inline-flex items-center gap-2 rounded-lg bg-[var(--color-fg)] px-4 py-2.5 text-sm font-medium text-[var(--color-bg)] transition-opacity hover:opacity-88"
+          >
+            Read the writing
+            <Icon name="arrow" size={16} />
+          </a>
+          <a
+            href="/about/"
+            class="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border-strong)] px-4 py-2.5 text-sm font-medium transition-colors hover:bg-[var(--color-surface)]"
+          >
+            About &amp; CV
+          </a>
+
+          <ul class="ml-auto flex gap-1.5" aria-label="Profiles">
+            {
+              SOCIAL.map((s) => (
+                <li>
+                  <a
+                    href={s.url}
+                    target="_blank"
+                    rel="me noopener noreferrer"
+                    title={s.name}
+                    class="grid size-9 place-items-center rounded-lg text-[var(--color-fg-subtle)] transition-colors hover:text-[var(--color-fg)]"
+                  >
+                    <Icon name={s.icon} size={18} />
+                    <span class="sr-only">{s.name}</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <ul class="mt-10 flex flex-wrap gap-2" aria-label="Core stack">
+          {
+            STACK.map((item) => (
+              <li class="rounded-md border border-[var(--color-border)] bg-[var(--color-elevated)] px-2.5 py-1 font-mono text-xs text-[var(--color-fg-muted)]">
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest posts -->
+  <section class="container-page py-16 sm:py-20">
+    <div class="flex items-end justify-between gap-4">
+      <h2 class="text-sm font-semibold tracking-widest text-[var(--color-fg-subtle)] uppercase">
+        Latest writing
+      </h2>
+      <a
+        href="/blog/"
+        class="group inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)]"
+      >
+        All {posts.length} posts
+        <Icon
+          name="arrow"
+          size={15}
+          class="transition-transform duration-300 ease-[var(--ease-out-quint)] group-hover:translate-x-0.5"
+        />
+      </a>
+    </div>
+
+    <div class="mt-6 grid gap-4">
+      {latest[0] && <PostCard post={latest[0]} featured />}
+      <div class="grid gap-4 sm:grid-cols-2">
+        {latest.slice(1).map((post) => <PostCard post={post} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Topics -->
+  {
+    tags.length > 0 && (
+      <section class="container-page pb-20">
+        <h2 class="text-sm font-semibold tracking-widest text-[var(--color-fg-subtle)] uppercase">
+          Browse by topic
+        </h2>
+        <ul class="mt-5 flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <li>
+              <a
+                href={`/tags/${tag.slug}/`}
+                class="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-elevated)] px-3 py-1.5 text-sm transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+              >
+                {tag.name}
+                <span class="font-mono text-xs text-[var(--color-fg-subtle)]">{tag.count}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</BaseLayout>

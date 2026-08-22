@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { SITE } from '../../consts.js';
+import { getPosts } from '../../utils/posts';
+
+const posts = await getPosts();
+
+// Group by year so a long archive stays scannable.
+const byYear = new Map<number, typeof posts>();
+for (const post of posts) {
+  const year = post.data.pubDate.getUTCFullYear();
+  byYear.set(year, [...(byYear.get(year) ?? []), post]);
+}
+const years = [...byYear.keys()].sort((a, b) => b - a);
+
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    '@id': `${SITE.url}/blog/#page`,
+    url: `${SITE.url}/blog/`,
+    name: 'Writing',
+    description: 'Every article published on this blog, newest first.',
+    isPartOf: { '@id': `${SITE.url}/#website` },
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Writing', item: `${SITE.url}/blog/` },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Writing"
+  description={`All ${posts.length} articles by Alexey Kasyanchuk on C/C++, Android NDK, embedded Linux, GStreamer and low-level systems engineering.`}
+  schema={schema}
+>
+  <div class="container-page py-14 sm:py-20">
+    <header class="max-w-2xl">
+      <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Writing</h1>
+      <p class="mt-4 leading-relaxed text-[var(--color-fg-muted)]">
+        {posts.length} articles on systems programming, embedded platforms and multimedia — mostly
+        write-ups of problems that cost me a day and shouldn't cost you one.
+      </p>
+    </header>
+
+    <div class="mt-14 space-y-14">
+      {
+        years.map((year) => (
+          <section aria-labelledby={`year-${year}`}>
+            <div class="flex items-center gap-4">
+              <h2
+                id={`year-${year}`}
+                class="font-mono text-sm font-medium text-[var(--color-fg-subtle)]"
+              >
+                {year}
+              </h2>
+              <div class="h-px flex-1 bg-[var(--color-border)]" aria-hidden="true" />
+            </div>
+            <div class="mt-5 grid gap-4 sm:grid-cols-2">
+              {byYear.get(year)!.map((post) => (
+                <PostCard post={post} />
+              ))}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

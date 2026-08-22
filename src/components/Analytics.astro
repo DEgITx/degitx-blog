@@ -1,0 +1,25 @@
+---
+import { SITE } from '../consts.js';
+
+// Only ships in production builds; `astro dev` stays clean of tracking.
+const enabled = import.meta.env.PROD && Boolean(SITE.analyticsId);
+const id = SITE.analyticsId;
+---
+
+{
+  enabled && (
+    <>
+      <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${id}`} />
+      <script is:inline define:vars={{ id }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          window.dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        // IP anonymisation is on by default in GA4; this also drops ad signals.
+        gtag('config', id, { anonymize_ip: true, allow_google_signals: false });
+      </script>
+    </>
+  )
+}

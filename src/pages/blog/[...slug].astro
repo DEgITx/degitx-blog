@@ -1,0 +1,327 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import { SITE } from '../../consts.js';
+import type { Post } from '../../utils/posts';
+import {
+  formatDate,
+  getPosts,
+  postPath,
+  readingTime,
+  relatedPosts,
+  tagSlug,
+} from '../../utils/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post, posts },
+  }));
+}
+
+interface Props {
+  post: Post;
+  posts: Post[];
+}
+
+const { post, posts } = Astro.props;
+const { Content, headings } = await render(post);
+
+const { title, seoTitle, description, pubDate, updatedDate, tags } = post.data;
+const url = `${SITE.url}${postPath(post)}`;
+const minutes = readingTime(post.body ?? '');
+const ogImage = post.data.heroImage ?? `/og/${post.id}.png`;
+
+// Only h2/h3 make a useful table of contents; deeper levels add noise.
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const hasToc = toc.length > 2;
+
+const index = posts.findIndex((p) => p.id === post.id);
+const newer = index > 0 ? posts[index - 1] : undefined;
+const older = index < posts.length - 1 ? posts[index + 1] : undefined;
+const related = relatedPosts(post, posts);
+
+const schema = [
+  {
+    '@type': 'BlogPosting',
+    '@id': `${url}#article`,
+    headline: title,
+    name: title,
+    description,
+    url,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    datePublished: pubDate.toISOString(),
+    dateModified: (updatedDate ?? pubDate).toISOString(),
+    author: { '@id': `${SITE.url}/#person` },
+    publisher: { '@id': `${SITE.url}/#person` },
+    isPartOf: { '@id': `${SITE.url}/#blog` },
+    inLanguage: SITE.lang,
+    keywords: tags.join(', '),
+    wordCount: (post.body ?? '').split(/\s+/).filter(Boolean).length,
+    timeRequired: `PT${minutes}M`,
+    image: new URL(ogImage, SITE.url).href,
+    articleSection: 'Software Engineering',
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Writing', item: `${SITE.url}/blog/` },
+      { '@type': 'ListItem', position: 3, name: title, item: url },
+    ],
+  },
+];
+
+const shareText = encodeURIComponent(title);
+const shareUrl = encodeURIComponent(url);
+---
+
+<BaseLayout
+  title={seoTitle ?? title}
+  description={description}
+  image={ogImage}
+  type="article"
+  publishedTime={pubDate}
+  modifiedTime={updatedDate ?? pubDate}
+  tags={tags}
+  schema={schema}
+>
+  <article
+    class:list={[
+      'container-page py-12 sm:py-16',
+      // Reserve the second column only when there is a table of contents to
+      // put in it, so a short post stays centred instead of sitting off-axis.
+      hasToc && 'lg:grid lg:grid-cols-[minmax(0,45rem)_15rem] lg:justify-center lg:gap-12',
+    ]}
+  >
+    <div class:list={['mx-auto w-full max-w-[45rem]', hasToc && 'lg:mx-0']}>
+    <!-- Header -->
+    <header>
+      <nav aria-label="Breadcrumb" class="text-sm">
+        <a
+          href="/blog/"
+          class="inline-flex items-center gap-1.5 text-[var(--color-fg-subtle)] transition-colors hover:text-[var(--color-fg)]"
+        >
+          <Icon name="arrow" size={14} class="rotate-180" />
+          Writing
+        </a>
+      </nav>
+
+      <h1 class="mt-6 text-3xl font-bold tracking-tight text-balance sm:text-[2.6rem]/tight">
+        {title}
+      </h1>
+
+      <p class="mt-5 text-lg leading-relaxed text-[var(--color-fg-muted)] text-pretty">
+        {description}
+      </p>
+
+      <div
+        class="mt-6 flex flex-wrap items-center gap-x-2.5 gap-y-1 border-t border-[var(--color-border)] pt-5 text-sm text-[var(--color-fg-subtle)]"
+      >
+        <span>{SITE.author}</span>
+        <span aria-hidden="true">&middot;</span>
+        <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+        {
+          updatedDate && (
+            <>
+              <span aria-hidden="true">&middot;</span>
+              <span>
+                Updated <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate)}</time>
+              </span>
+            </>
+          )
+        }
+        <span aria-hidden="true">&middot;</span>
+        <span>{minutes} min read</span>
+      </div>
+    </header>
+
+    <!-- Body -->
+    <div class="prose mt-12">
+      <Content />
+    </div>
+
+    <!-- Footer: tags + share -->
+    <footer class="mt-16">
+      <div
+        class="flex flex-col gap-6 border-t border-[var(--color-border)] pt-8 sm:flex-row sm:items-center sm:justify-between"
+      >
+        {
+          tags.length > 0 && (
+            <ul class="flex flex-wrap gap-2" aria-label="Tags">
+              {tags.map((tag) => (
+                <li>
+                  <a
+                    href={`/tags/${tagSlug(tag)}/`}
+                    class="inline-block rounded-md border border-[var(--color-border)] px-2.5 py-1 font-mono text-xs text-[var(--color-fg-muted)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                  >
+                    {tag}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+
+        <div class="flex shrink-0 items-center gap-3 text-sm">
+          <span class="text-[var(--color-fg-subtle)]">Share</span>
+          <a
+            href={`https://x.com/intent/tweet?text=${shareText}&url=${shareUrl}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="grid size-8 place-items-center rounded-lg border border-[var(--color-border)] text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)]"
+          >
+            <Icon name="x" size={14} />
+            <span class="sr-only">Share on X</span>
+          </a>
+          <a
+            href={`https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="grid size-8 place-items-center rounded-lg border border-[var(--color-border)] text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)]"
+          >
+            <Icon name="linkedin" size={14} />
+            <span class="sr-only">Share on LinkedIn</span>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Related -->
+    {
+      related.length > 0 && (
+        <section class="mt-14" aria-labelledby="related-heading">
+          <h2
+            id="related-heading"
+            class="text-xs font-semibold tracking-widest text-[var(--color-fg-subtle)] uppercase"
+          >
+            Related reading
+          </h2>
+          <ul class="mt-5 divide-y divide-[var(--color-border)] border-y border-[var(--color-border)]">
+            {related.map((r) => (
+              <li>
+                <a href={postPath(r)} class="group flex items-center gap-4 py-4">
+                  <span class="min-w-0 flex-1">
+                    <span class="block font-medium transition-colors group-hover:text-[var(--color-accent)]">
+                      {r.data.title}
+                    </span>
+                    <span class="mt-1 block text-sm text-[var(--color-fg-subtle)]">
+                      {formatDate(r.data.pubDate)}
+                    </span>
+                  </span>
+                  <Icon
+                    name="arrow"
+                    size={16}
+                    class="shrink-0 text-[var(--color-fg-subtle)] transition-transform duration-300 ease-[var(--ease-out-quint)] group-hover:translate-x-1"
+                  />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <!-- Prev / next -->
+    <nav class="mt-10 grid gap-3 sm:grid-cols-2" aria-label="Post navigation">
+      {
+        older ? (
+          <a
+            href={postPath(older)}
+            rel="prev"
+            class="group rounded-[var(--radius-card)] border border-[var(--color-border)] p-4 transition-colors hover:border-[var(--color-border-strong)]"
+          >
+            <span class="text-xs text-[var(--color-fg-subtle)]">&larr; Older</span>
+            <span class="mt-1 block text-sm font-medium transition-colors group-hover:text-[var(--color-accent)]">
+              {older.data.title}
+            </span>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        newer && (
+          <a
+            href={postPath(newer)}
+            rel="next"
+            class="group rounded-[var(--radius-card)] border border-[var(--color-border)] p-4 text-right transition-colors hover:border-[var(--color-border-strong)]"
+          >
+            <span class="text-xs text-[var(--color-fg-subtle)]">Newer &rarr;</span>
+            <span class="mt-1 block text-sm font-medium transition-colors group-hover:text-[var(--color-accent)]">
+              {newer.data.title}
+            </span>
+          </a>
+        )
+      }
+    </nav>
+    </div>
+
+    <!-- Table of contents: the grid's second column, so it tracks the body. -->
+    {
+      hasToc && (
+        <aside class="hidden lg:block">
+          <nav aria-labelledby="toc-heading" class="sticky top-24">
+            <h2
+              id="toc-heading"
+              class="text-xs font-semibold tracking-widest text-[var(--color-fg-subtle)] uppercase"
+            >
+              On this page
+            </h2>
+            <ul class="mt-4 space-y-2 border-l border-[var(--color-border)] text-sm">
+              {toc.map((heading) => (
+                <li>
+                  <a
+                    href={`#${heading.slug}`}
+                    data-toc-link
+                    class:list={[
+                      '-ml-px block border-l border-transparent py-0.5 leading-snug text-[var(--color-fg-muted)] transition-colors hover:border-[var(--color-fg-subtle)] hover:text-[var(--color-fg)]',
+                      heading.depth === 2 ? 'pl-4' : 'pl-7 text-[13px]',
+                    ]}
+                  >
+                    {heading.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </aside>
+      )
+    }
+  </article>
+</BaseLayout>
+
+<script>
+  // Highlight the table-of-contents entry for the section currently in view.
+  const links = document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]');
+  if (links.length) {
+    const ACTIVE = ['border-[var(--color-accent)]', 'text-[var(--color-fg)]', 'font-medium'];
+    const byId = new Map<string, HTMLAnchorElement>();
+    for (const link of links) byId.set(decodeURIComponent(link.hash.slice(1)), link);
+
+    const targets = [...byId.keys()]
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    let current: HTMLAnchorElement | null = null;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const link = byId.get(entry.target.id);
+          if (!link || link === current) continue;
+          current?.classList.remove(...ACTIVE);
+          link.classList.add(...ACTIVE);
+          current = link;
+        }
+      },
+      // Narrow band near the top of the viewport: whichever heading crosses it wins.
+      { rootMargin: '-80px 0px -75% 0px', threshold: 0 }
+    );
+
+    for (const target of targets) observer.observe(target);
+  }
+</script>

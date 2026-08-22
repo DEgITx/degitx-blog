@@ -1,0 +1,26 @@
+---
+import Icon from './Icon.astro';
+---
+
+<button
+  id="theme-toggle"
+  type="button"
+  class="grid size-9 place-items-center rounded-lg text-[var(--color-fg-muted)] transition-colors hover:bg-[var(--color-surface)] hover:text-[var(--color-fg)]"
+  aria-label="Toggle colour theme"
+>
+  <Icon name="sun" size={18} class="hidden dark:block" />
+  <Icon name="moon" size={18} class="block dark:hidden" />
+</button>
+
+<script>
+  const button = document.getElementById('theme-toggle');
+
+  button?.addEventListener('click', () => {
+    const dark = document.documentElement.classList.toggle('dark');
+    try {
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+    } catch {
+      // Private mode or blocked storage: the toggle still works for this page.
+    }
+  });
+</script>
