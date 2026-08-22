@@ -1,5 +1,5 @@
 ---
-title: "Crossplatform C++ Arch detection"
+title: "Cross-platform C++ architecture detection"
 seoTitle: "Cross-platform C++ architecture detection"
 description: "Detecting CPU architecture (x86, x86_64, ARM, ARM64) at compile time with portable C/C++ preprocessor macros across GCC, Clang and MSVC."
 pubDate: 2022-07-22
@@ -16,7 +16,7 @@ tags:
   - "CMake"
 ---
 
-You can simply get current arch usign following code, where on windows can be used GetNativeSystemInfo() and on macos and linux uname() function:
+You can get the current architecture with the code below: on Windows it uses `GetNativeSystemInfo()`, and on macOS and Linux the `uname()` function:
 
 ```cpp
 std::string GetOSArch()
@@ -53,7 +53,7 @@ std::string GetOSArch()
 }
 ```
 
-OS detection can be done for example on cmake side or with other definition like `__WIN32`:
+OS detection can be done on the CMake side, for example, or with a built-in macro such as `_WIN32`:
 
 ```cmake
 if(WIN32)

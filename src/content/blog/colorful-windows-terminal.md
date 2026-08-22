@@ -1,5 +1,5 @@
 ---
-title: "Display color output with C/C++ in windows terminal (fix escape characters color displaying)"
+title: "Display color output with C/C++ in the Windows terminal (fixing printed escape characters)"
 seoTitle: "ANSI colors in the Windows terminal from C/C++"
 description: "Making ANSI escape colors work in the Windows console from C/C++ with ENABLE_VIRTUAL_TERMINAL_PROCESSING, instead of printing raw escape characters."
 pubDate: 2023-03-03
@@ -12,9 +12,9 @@ tags:
   - "ANSI"
 ---
 
-On windows when you will try to display \033[0m or \x1B[31m and so one, instead of getting color in terminal you will get ]31m. On windows 10 and letter it's pretty easy to fix. You just need to include next code:
+On Windows, when you try to print `\033[0m`, `\x1B[31m` and so on, you get the raw escape sequence (something like `[31m`) in the terminal instead of colored text. On Windows 10 and later this is pretty easy to fix — you just need to add the following code:
 
-```bash
+```cpp
 #include <windows.h>
 
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -25,5 +25,5 @@ if (hConsole)
     SetConsoleMode(hConsole, consoleMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
 }
 
-// now you can use color printf()
+// now you can use colors in printf()
 ```

@@ -1,5 +1,5 @@
 ---
-title: "GStreamer H264/MP4 decoding C/C++ basics and encoding/decoding buffers manipulations"
+title: "GStreamer H264/MP4 decoding in C/C++: basics and buffer manipulation"
 seoTitle: "GStreamer H264/MP4 decoding in C/C++"
 description: "GStreamer from C/C++: building H264/MP4 decode pipelines, gst-launch-1.0 basics, appsink/appsrc buffer manipulation and camera capture."
 pubDate: 2020-10-22
@@ -14,57 +14,58 @@ tags:
 
 ## Exploring GStreamer and pipelines
 
-Before proceeding to code review, let’s look at what we can do without it.  GStreamer includes useful utilities to work with, in particular:
+Before we get to the code, let’s look at what we can do without it. GStreamer ships with a few useful utilities, in particular:
 
-* gst-inspect-1.0 will allow you to see a list of available codecs and modules, so you can immediately see what will do with it and select a set of filters and codecs.
-* gst-launch-1.0 allows you to start any pipeline.
-GStreamer uses a decoding scheme where a stream passes through different components in series, from source to sink output. You can choose anything as a source: a file, a device, the output (sink) also may be a file, a screen, network outputs, and protocols (like RTP).
+* `gst-inspect-1.0` lists the available codecs and modules, so you can see straight away what you have to work with and pick a set of filters and codecs.
+* `gst-launch-1.0` lets you run any pipeline.
 
-Simple example of using gst-launch-1.0 to connect elements and play audio:
+GStreamer uses a scheme in which a stream passes through a series of components, from the source to the sink. Anything can be the source: a file or a device. The output (sink) can likewise be a file, the screen, or a network output over some protocol (RTP, for instance).
+
+A simple example of using `gst-launch-1.0` to connect elements and play audio:
 ```bash
 gst-launch-1.0 filesrc location=/path/to/file.ogg ! decodebin ! alsasink
 ```
-![How to sink and src works](/images/gstreamer/sinksrc.png)
+![How src and sink work together](/images/gstreamer/sinksrc.png)
 
-Filesrc will open file, decodebin - decode it, and alsasink will output audio. 
+`filesrc` opens the file, `decodebin` decodes it, and `alsasink` plays the audio.
 
 Another more complex example of playing an mp4 file:
 ```bash
 gst-launch-1.0 filesrc location=file.mp4 ! qtdemux ! h264parse ! avdec_h264 ! videoconvert ! autovideosink
 ```
 
-The input accepts the mp4 file, which goes through the mp4 demuxer — qtdemux, then through the h264 parser, then through the decoder, the converter, and finally, the output.
+The input takes an mp4 file, which goes through the mp4 demuxer — qtdemux — then through the h264 parser, the decoder, the converter and finally to the output.
 
-You can replace autovideosink with filesink with a file parameter and output the decoded stream directly to the file.
+You can replace `autovideosink` with `filesink` plus a location parameter and write the decoded stream straight to a file.
 
-## Programming an application with GStreamer C/C++ API. Let’s try to decode
+## Programming with the GStreamer C/C++ API: let’s try to decode
 
-Now when we know how to use gst-launch-1.0, we are doing the same thing within our application. The principle remains the same: we are building in a decoding pipeline, but now we are using the GStreamer library and glib-events.
+Now that we know how to use `gst-launch-1.0`, let’s do the same thing inside our own application. The principle stays the same — we build a decoding pipeline — but now we use the GStreamer library and glib events.
 
-We will consider a live example of H264 decoding.
+We will walk through a live example of H264 decoding.
 
-Initialization of the GStreamer application takes place once with the help of
+A GStreamer application is initialized once, with:
 
 ```cpp
 gst_init (NULL, NULL);
 ```
-If you want to see what’s happening in detail, you can set up a logging level before the initialization.
+If you want to see what’s happening in detail, set the logging level before initialization:
 
 ```cpp
 gst_debug_set_active(TRUE);
 gst_debug_set_default_threshold(GST_LEVEL_LOG);
 ```
 
-Note: no matter how many pipelines you have in your application, it is enough to initialize gst_init once.
+Note: no matter how many pipelines your application has, calling `gst_init` once is enough.
 
-Let’s create a new event-loop where events will be processed:
+Let’s create the event loop in which events will be processed:
 
 ```cpp
 GMainLoop *loop;
 loop = g_main_loop_new (NULL, FALSE);
 ```
 
-And now we can start building our pipeline. Let’s name the necessary elements, in particular, the pipeline itself as the GstElement type:
+Now we can start building our pipeline. Let’s declare the elements we need, including the pipeline itself, all of type `GstElement`:
 
 ```cpp
 GstElement *pipeline, *source, *demuxer, *parser, *decoder, *conv, *sink;
@@ -78,9 +79,9 @@ conv     = gst_element_factory_make ("videoconvert",  "converter");
 sink     = gst_element_factory_make ("appsink", "video-output");
 ```
 
-Each element of the pipeline is created via gst_element_factory_make, where the first parameter is the type and the second is its conditional name for GStreamer, on which it will later rely (for example, when issuing errors).
+Each element of the pipeline is created via `gst_element_factory_make`, where the first parameter is the element type and the second is an arbitrary name that GStreamer will use later on (when reporting errors, for example).
 
-It would also be nice to check that all components are found otherwise gst_element_factory_make returns NULL.
+It is also a good idea to check that all the components were found — `gst_element_factory_make` returns NULL if one was not.
 
 ```cpp
 if (!pipeline || !source || !demuxer || !parser || !decoder || !conv || !sink) {
@@ -89,15 +90,15 @@ if (!pipeline || !source || !demuxer || !parser || !decoder || !conv || !sink) {
 }
 ```
 
-We are setting the same location parameter via g_object_set:
+We set the `location` parameter via `g_object_set`:
 
 ```cpp
 g_object_set (G_OBJECT (source), "location", argv[1], NULL);
 ```
 
-Other parameters in other elements can be set in the same way.
+Parameters of the other elements are set the same way.
 
-Now we need the GStreamer message handler, let’s create the corresponding bus_call:
+Now we need a GStreamer message handler, so let’s attach the corresponding `bus_call`:
 
 ```cpp
 GstBus *bus;
@@ -108,9 +109,9 @@ bus_watch_id = gst_bus_add_watch (bus, bus_call, loop);
 gst_object_unref (bus);
 ```
 
-gst_object_unref and other similar calls are needed to clear selected objects.
+`gst_object_unref` and similar calls are needed to release the objects we allocated.
 
-Then we will name the message handler itself:
+And here is the message handler itself:
 
 ```cpp
 static gboolean
@@ -144,14 +145,14 @@ bus_call (GstBus     *bus,
 }
 ```
 
-And now the most important thing: we collect and add all the created elements in a single pipeline, which was built through gst-launch. The order of addition is, of course, important:
+And now the most important part: we collect all the created elements into a single pipeline — the same one we assembled with gst-launch earlier. The order matters, of course:
 
 ```cpp
 gst_bin_add_many (GST_BIN (pipeline), source, demuxer, parser, decoder, conv, sink, NULL);
 gst_element_link_many (source, demuxer, parser, decoder, conv, sink, NULL);
 ```
 
-We should also note that this linking of elements works perfectly for stream outputs, but in the case of playback (autovideosink) requires additional synchronization and dynamic linking of the demuxer and parser:
+It is worth noting that this way of linking elements works perfectly for stream outputs, but playback (`autovideosink`) requires additional synchronization and dynamic linking of the demuxer and the parser:
 
 ```cpp
 gst_element_link (source, demuxer);
@@ -175,21 +176,21 @@ on_pad_added (GstElement *element,
 }
 ```
 
-A dynamic connection makes it possible to determine the type and number of threads in contrast to a static one and will work in some cases when it is required.
+Unlike a static link, a dynamic one makes it possible to discover the type and the number of streams, and in some cases it is the only thing that works.
 
-And finally, let’s turn the conveyor status into a playback:
+And finally, let’s switch the pipeline state to playing:
 
 ```cpp
 gst_element_set_state (pipeline, GST_STATE_PLAYING);
 ```
 
-And let’s run event-loop:
+And run the event loop:
 
 ```cpp
 g_main_loop_run (loop);
 ```
 
-After this procedure, everything needs to be cleaned:
+After that, everything has to be cleaned up:
 
 ```cpp
 gst_element_set_state (pipeline, GST_STATE_NULL);
@@ -198,11 +199,11 @@ g_source_remove (bus_watch_id);
 g_main_loop_unref (loop);
 ```
 
-## Choosing encoders and decoders. Fallbacks.
+## Choosing encoders and decoders, and falling back
 
-There’s more to tell about useful but barely mentioned things in the documentation: how you can easily organize a fallback decoder or encoder.
+There is one more useful thing the documentation barely mentions: how to easily set up a fallback decoder or encoder.
 
-The gst_element_factory_find function will help us do this by checking if we have a codec in the elements factory:
+The `gst_element_factory_find` function helps here by checking whether a codec is present in the element factory:
 
 ```cpp
 if(gst_element_factory_find("omxh264dec"))
@@ -211,37 +212,37 @@ else
   decoder  = gst_element_factory_make ("avdec_h264",     "h264-decoder");
 ```
 
-In this example, we have prioritized the selection of an OMX hardware decoder on the RDK platform, and in case of its absence, we will choose a software implementation.
+In this example we prefer the OMX hardware decoder on the RDK platform and fall back to a software implementation when it is missing.
 
-Another extremely useful but even more rarely used feature is to check what we actually initialized in GstElement (which of many codecs):
+Another extremely useful but even more rarely used trick is to check what we actually initialized in a `GstElement` (which of the many codecs it ended up being):
 
 ```cpp
 gst_plugin_feature_get_name(gst_element_get_factory(encoder));
 ```
 
-You can do it in such a simple way and return the name of the initialized codec.
+That simple call returns the name of the initialized codec.
 
 ## Video color models
 
-We can’t help but mention color models as well since we are talking about encoding video from cameras. And that’s when YUV goes on stage (much more often than RGB).
+Since we are talking about encoding video from cameras, we can’t skip color models — and that is where YUV enters the stage (far more often than RGB).
 
-Cameras simply love the YUYV color model. But GStreamer likes to work with the usual I420 model much better. If it is not about outputting in the gl-frame, we will also have I420 frames. Get ready to set up the filters you need and perform the transformations.
+Cameras simply love the YUYV color model, while GStreamer much prefers the usual I420. Unless you are rendering into a GL frame, you will be dealing with I420 frames as well, so be ready to set up the filters you need and to convert between formats.
 
-Some encoders can work with other color models as well, but more often, these are exceptions to the rule.
+Some encoders can work with other color models too, but those are usually exceptions to the rule.
 
-We should also note that GStreamer has its own module for receiving video streams from your camera, and it can be used to build a pipeline, but we will talk about it some other time.
+It is also worth noting that GStreamer has its own module for capturing video from a camera, which you can use to build a pipeline — but that is a topic for another time.
 
-Let’s deal with buffers and take data on the fly
+## Working with buffers: taking data on the fly
 
 ### Input buffer
 
-It’s time to deal with the data flows. Until now, we have simply encoded through filesrc what is in the file and displayed everything in the same filesink or on the screen.
+It’s time to deal with data flows. Until now we simply decoded whatever was in the file through `filesrc` and sent everything to a `filesink` or to the screen.
 
-Now we will work with the buffers and the appsrc / appsink inputs and outputs. For some reason, this issue was hardly taken into account in the official documentation.
+Now we will work with buffers and with the `appsrc` / `appsink` input and output elements. For some reason the official documentation hardly covers this.
 
-So how to organize a constant data flow in the created pipelines, or if to be more precise to the output buffer and get an encoded or decoded output buffer? Let’s say we got the image from the camera and we need to encode it. We have already decided that we need a frame in the I420 format. Let’s say we have it, what’s next? How do I pass a picture through the whole pipeline flow?
+So how do we push a continuous data flow into the pipelines we built — or, to be precise, feed the input buffer and get an encoded or decoded output buffer back? Let’s say we grabbed an image from the camera and we need to encode it. We have already established that we need a frame in I420 format. Suppose we have one — what’s next? How do we pass a picture through the whole pipeline?
 
-First, let’s set up the need-data event handler, which will be started when it is necessary to feed data into the pipeline and start feeding the input buffer:
+First, let’s set up the `need-data` event handler, which is called whenever the pipeline needs to be fed, and start filling the input buffer:
 
 ```cpp
 g_signal_connect (source, "need-data", G_CALLBACK (encoder_cb_need_data), NULL);
@@ -271,19 +272,19 @@ encoder_cb_need_data (GstElement *appsrc,
 }
 ```
 
-You might say that “image” is the pseudo-code of our image buffer in I420.
+Here `image` is pseudocode for our I420 image buffer.
 
-Next, we create a buffer of the necessary size through gst_buffer_new_allocate, which will correspond to the size of the image buffer.
+Next we create a buffer of the required size through `gst_buffer_new_allocate`, matching the size of the image buffer.
 
-With gst_buffer_map we set the buffer to write mode and use memcpy to copy our image to the created buffer.
+With `gst_buffer_map` we put the buffer into write mode and use `memcpy` to copy our image into it.
 
-And finally, we signal GStreamer that the buffer is ready.
+And finally we signal to GStreamer that the buffer is ready.
 
-Note: it is essential to use gst_buffer_unmap after writing and to clear the buffer after using gst_buffer_unref. Otherwise, there will be a memory leak. In the low number of available examples, no one was particularly concerned about memory usage, although this is very important.
+Note: it is essential to call `gst_buffer_unmap` after writing and to release the buffer with `gst_buffer_unref`. Otherwise you will leak memory. The few examples available out there are not particularly concerned about memory usage, even though it matters a lot.
 
-Now, when we are done with the handler, one more thing to do is to configure caps on the receipt of our expected format.
+Now that the handler is done, one more thing is left: configuring the caps for the format we expect to receive.
 
-This is done before installing the need-data signal handler:
+This is done before installing the `need-data` signal handler:
 
 ```cpp
 g_object_set (G_OBJECT (source),
@@ -300,19 +301,19 @@ g_object_set (G_OBJECT (source), "caps",
               NULL);
 ```
 
-Like all GstElement parameters, the parameters are set via g_object_set.
+Like all `GstElement` parameters, these are set via `g_object_set`.
 
-In this case, we have defined the stream type and its caps — the data format. We are specifying that the appsrc output will receive the I420 data with 640×480 resolution and 30 frames per second.
+Here we define the stream type and its caps — the data format. We specify that `appsrc` will be fed I420 data at 640×480 resolution and 30 frames per second.
 
-Frequency in our case, and in general, does not play any role. While working, we haven’t noticed that GStreamer somehow limits need-data calls by frequency.
+The frame rate plays no real role here, or in general: while working on this we never noticed GStreamer limiting `need-data` calls by frequency.
 
-Finished, now our frames are fed into the encoder.
+That’s it — our frames are now fed into the encoder.
 
 ### Output buffer
 
-Now let’s find out how to get an encoded output stream.
+Now let’s see how to get the encoded output stream.
 
-We connect the handler to the sink pad:
+We attach the handler to the sink pad:
 
 ```cpp
 GstPad *pad = gst_element_get_static_pad (sink, "sink");
@@ -320,7 +321,7 @@ gst_pad_add_probe  (pad, GST_PAD_PROBE_TYPE_BUFFER, encoder_cb_have_data, NULL, 
 gst_object_unref (pad);
 ```
 
-Similarly, we connected to another sink pad event, GST_PAD_PROBE_TYPE_BUFFER, which would be triggered as the data buffer enters the sink pad.
+This subscribes us to another sink pad event, `GST_PAD_PROBE_TYPE_BUFFER`, which is triggered as a data buffer enters the sink pad.
 
 ```cpp
 static GstPadProbeReturn
@@ -339,6 +340,6 @@ encoder_cb_have_data (GstPad * pad,
 }
 ```
 
-The callback has a similar structure. Now, we need to reach the buffer memory. First, we get GstBuffer, then a pointer of its memory using gst_buffer_get_memory by index 0 (as a rule, it is the only one involved). Finally, using gst_memory_map, we get the data buffer address bufInfo.data and its size bufInfo.size.
+The callback has a similar structure. This time we need to reach the buffer memory: first we get the `GstBuffer`, then a pointer to its memory with `gst_buffer_get_memory` at index 0 (as a rule it is the only one involved). Finally, `gst_memory_map` gives us the data address `bufInfo.data` and its size `bufInfo.size`.
 
-Using same technique you can pass and recive encoded or decoded data with any complex pipeline using decoding elements or encoding elements or even using filters. I will recomend to prepare and test you pipeline using gst-launch-1.0 console utility at first, and then build same pipeline using native code.
+Using the same technique you can push and receive encoded or decoded data through a pipeline of any complexity, with decoding elements, encoding elements or even filters. My recommendation is to prepare and test your pipeline with the `gst-launch-1.0` console utility first, and only then build the same pipeline in native code.

@@ -12,53 +12,57 @@ tags:
   - "Algorithms"
 ---
 
-After a long thought, I finally decided to switch my blog articles to english, and continue to give some rare and mostly unintresting info in free form. And today we will talk more about Android, NDK and some undocumentated video/audio functionality, maybe will discover some new knowlage about AAC and maybe it will help your own problem, like it was for me.
-In a focus of this acrticle is Android AAC decoder, and a little detail how the decoding in android working behind NDK documentation.
+After a long time thinking about it, I finally decided to switch my blog articles to English and to keep sharing rare — and mostly uninteresting — pieces of information in free form. Today we will talk about Android, the NDK and some undocumented video/audio behaviour. Maybe we will discover something new about AAC along the way, and maybe it will help with a problem of yours, as it did with mine.
 
-## AMediaCodec using steps
+The focus of this article is the Android AAC decoder, and a few details about how decoding actually works behind the NDK documentation.
 
-First let take a very very surface look how to start decoding using NDK:  
-1. Create AMediaCodec using codec name.
-2. Configure AMediaCodec via AMediaCodec_configure.
-3. Ctart decoding AMediaCodec_start.
-4. Give a buffer using AMediaCodec_getInputBuffer.
-5. Back buffer with AMediaCodec_queueInputBuffer.
-6. Repeat while you have an buffer ;).
+## Using AMediaCodec, step by step
 
-Looks very simple, and work good as well. I can end this article in this place, but I don't tell you nothing about buffer requirenments and other stuffs, and in NDK/SDK also all simple like that. So what going on behind this android decoding? What if you getting some error with your buffer, or you don't have sound in some rare cases? How the Android decoder works like, let take a look at AAC audio decoder as example. Let's begin from simple.
+First, let's take a very superficial look at how to start decoding with the NDK:
+
+1. Create an AMediaCodec by codec name.
+2. Configure it via `AMediaCodec_configure`.
+3. Start decoding with `AMediaCodec_start`.
+4. Get a buffer with `AMediaCodec_getInputBuffer`.
+5. Hand the buffer back with `AMediaCodec_queueInputBuffer`.
+6. Repeat as long as you have buffers ;)
+
+It looks very simple, and it works well. I could end the article right here, but that would tell you nothing about buffer requirements and the rest of it — and the NDK/SDK documentation is just as brief. So what is going on behind Android decoding? What if you get an error with your buffer, or have no sound in some rare cases? Let's take the AAC audio decoder as an example and see how it works. Let's start with the simple part.
 
 ![Android AAC decoder architecture](/images/ndk-acc/download.jpg)
 
-As you see on this bad jpeg picture :) Android have different implementation of AAC decoders as OMX components. But that's not all, beside some software implemetation on some platforms existed hardware implementation, like on Broadcom chips. Keep at mind, and will transport to SoftAAC2 decoder. Let take a look deeper.
+As you can see in this low-quality JPEG :), Android has several implementations of AAC decoders exposed as OMX components. And that's not all: besides the software implementations, some platforms ship hardware ones, like Broadcom chips do. Keep that in mind — we are heading to the SoftAAC2 decoder. Let's look deeper.
+
 ## SoftAAC2
 
 ![SoftAAC2 decoder stack](/images/ndk-acc/VS7-04-AAC-Decord-flow.png)
 
-In the deep level we finally see SoftAAC2 decoder, now it's looks not so simple like "start AAC decoder" isn't it? :) But we finally know how the buffer transfer from decoder to upper of ACodec abstraction. 
-Now we know a little about SoftAAC2 (that default software AAC decoder). Now let's expand knowledges about how ADTS AAC packets looks like. This is a good representation of it:
+Down at this level we finally see the SoftAAC2 decoder. It doesn't look as simple as "start the AAC decoder" anymore, does it? :) But now we know how the buffer travels from the decoder up to the ACodec abstraction, and we know a little about SoftAAC2 (the default software AAC decoder).
+
+Now let's expand our knowledge of what ADTS AAC packets look like. Here is a good illustration:
 
 ![AAC-ADTS sequence](/images/ndk-acc/VS7-02-AAC-ADTS-hejunlin.png)
 
-As you see on bottom very important info, that protection_absent flag is very important and based of it header can be 7 bytes or 9 bytes length.
-Ok now it is time to talk about main theme of this article - ADTS alignment. 
+Note the important detail at the bottom: the `protection_absent` flag decides whether the header is 7 or 9 bytes long.
+
+Now it is time to talk about the main topic of this article — ADTS alignment.
 
 ![AAC-ADTS align](/images/ndk-acc/VS7-02-AAC-ADTS-hejunlin_cplit.png)
 
-This is very typical example how your receiver can get the buffer, without any knowledge about buffer encoder alignment requirements. So what you can do in such situation when packets not align properly?
-Let's realign frames according proper requirements for all decoders to make buffer splitted to complete AAC frame chunks.
+This is a very typical example of how your receiver gets a buffer without any knowledge of the alignment the encoder expects. So what can you do when the packets are not aligned properly? Let's realign the frames the way every decoder expects them, so that the buffer is split into complete AAC frame chunks.
 
-## AAC-ADTS align
+## AAC-ADTS alignment
 
-First of all, lets detect AAC header beginning:
+First of all, let's detect the beginning of an AAC header:
 
 ```cpp
 if ((0xFF == frameBuffer[offset]) && ((0xF9 == frameBuffer[offset+1]) || (0xF1 == frameBuffer[offset+1])))
 {
- // This AAC header start
+ // This is where the AAC header starts
 }
 ```
 
-Now let's detect AAC ES frame size according frame header data:
+Now let's read the AAC ES frame size from the frame header:
 
 ```cpp
 unsigned aac_frame_length =
@@ -67,7 +71,7 @@ unsigned aac_frame_length =
                     | (frameBuffer[offset+5] >> 5);
 ```
 
-Where offset can be any lookup counter. It's time to copy the frame data into some buffer struct with size+buffer parts.
+Here `offset` can be any lookup counter. It's time to copy the frame data into a buffer struct that holds a size and a buffer.
 
 ```cpp
 BufferedFrame aacFrame;
@@ -76,22 +80,24 @@ aacFrame.size = aac_frame_length;
 memcpy(aacFrame.buffer, frameBuffer + offset, aac_frame_length);
 ```
 
-Continue until you reach the frame end. Don't forget to handle end buffer parts, and concat with new one at endings and beginnings.
-Full ADTS alignment algorithm will be follow:
+Continue until you reach the end of the frame. Don't forget to handle the tail of the buffer and to concatenate it with the head of the next one.
+
+The full ADTS alignment algorithm looks like this:
 
 ```cpp
 ssize_t offset = 0;
-vector frames;
+vector<BufferedFrame> frames;
 
-// copy_at_end and copy_at_begin - are pseudocode to copy left part of the incomplete buffer 
-// and finish it with right part of next buffer chunk
+// copy_at_end and copy_at_begin are pseudocode: they copy the leftover part of an
+// incomplete buffer and complete it with the head of the next buffer chunk
 
-// copy left part of (aac_frame_length - mResSize)
+// copy the leftover part of (aac_frame_length - mResSize)
 // increase offset += (aac_frame_length - mResSize)
 // reset mRes = false;
-// Concat partiticial buffers from copy_at_begin with copy_at_end to make complete aac packet
+// concatenate the partial buffers from copy_at_begin and copy_at_end
+// to build a complete AAC packet
 if(mRes)
-    copy_at_end(halFrameBuffer + offset, frameBufferSize - offset); // to to some restore buffer
+    copy_at_end(halFrameBuffer + offset, frameBufferSize - offset); // into some restore buffer
 
 while(offset < frameBufferSize)
 {
@@ -105,7 +111,7 @@ while(offset < frameBufferSize)
         if (offset + aac_frame_length <= frameBufferSize)
         {
             BufferedFrame aacFrame;
-            // You can allocate any own buffer array for handle new buffer before!
+            // You can preallocate your own buffer array to hold the new buffer!
             aacFrame.buffer = localBuf[num++];
             aacFrame.size = aac_frame_length;
             memcpy(aacFrame.buffer, frameBuffer + offset, aac_frame_length);
@@ -114,10 +120,10 @@ while(offset < frameBufferSize)
         }
         else
         {
-            // mRes, mResSize - global ones
+            // mRes, mResSize are global
             mRes = true;
-            mResSize = frameBufferSize - offset
-            copy_at_begin(halFrameBuffer + offset, mResSize); // to to some restore buffer
+            mResSize = frameBufferSize - offset;
+            copy_at_begin(halFrameBuffer + offset, mResSize); // into some restore buffer
         }
     }
     else
@@ -127,4 +133,4 @@ while(offset < frameBufferSize)
 }
 ```
 
-Algorithm has linear time
+The algorithm runs in linear time.

@@ -11,11 +11,12 @@ tags:
   - "Ninja"
 ---
 
-"C_INCLUDES must be under the source or output directories" error can indicate the the sources not included under LOCAL_C_INCLUDES
+The "C_INCLUDES must be under the source or output directories" error usually means that the sources are not listed under `LOCAL_C_INCLUDES`:
+
 ```bash
 LOCAL_C_INCLUDES += \
     $(LOCAL_PATH) \
     $(LOCAL_PATH)/src
 ```
 
-But at the same time be aware of symlinks! The problem can be if the folder created with symlinks! So aware of them.
+But watch out for symlinks as well: the same error appears when the folder was created as a symlink, so keep that case in mind too.

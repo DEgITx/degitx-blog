@@ -6,4 +6,4 @@ tags:
   - "Meta"
 ---
 
-Hello everyone this is my updated blog page. Here I will post my post about programming (C/C++/Java/Python), music engineering and other life stuffs. So everyone are welcome.
+Hello everyone, this is my updated blog page. Here I will write about programming (C/C++/Java/Python), music engineering and other things from my life. Everyone is welcome.

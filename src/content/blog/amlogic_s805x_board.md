@@ -14,50 +14,52 @@ tags:
   - "DTB"
 ---
 
-One of the previous projects was related to bringing up our newly developed board with the AmLogic s805x SoC CPU board. I will describe how the proccess of bringing up looks like, what was tested and also we will take a look how the AmLogic board flashing proccess is carried out for GXL platform (G12B and more recent are very similar).
+One of my previous projects was the bring-up of a newly developed board based on the AmLogic s805x (GXL) SoC. I will describe what the bring-up process looks like and what was tested, and we will also take a look at how flashing an AmLogic board works on the GXL platform (G12B and newer are very similar).
+
 This is our board:
 
 ![Our developed Z8 board with AmLogic s805x SoC](/images/s805x/1.png)
 
-The first stage of bringup is to build image for reference board. Our case is p241. We took a113 sources for this. Build p241 reference sources:
+The first stage of a bring-up is to build an image for the reference board. In our case that is p241, and we took the a113 sources for it. Building the p241 reference sources:
 
-## Build image
+## Build the image
 
 ```bash
 # You need arm-linux-gnueabihf-gcc and aarch64-linux-gnu-gcc to be installed in system toolchains
 $ sudo apt-get install zlib1g zlib1g-dev
 $ source buildroot/build/setenv.sh
-# Choose “mesongxl_p241_32_kernel49” // 37
+# Choose "mesongxl_p241_32_kernel49" // option 37
 $ ln -s aml-4.9 kernel/aml-3.14
 $ ln -s aml-4.9 hardware/aml-3.14
 $ make
 ```
 
-After the proccess in complete everything will be at output/mesongxl_p241_32_kernel49/images with folowing parts:
-* boot.img - kernel
-* u-boot.bin - u-boot image
-* rootfs.ext2 - rootfs
-* gxl_p241_v2_1g_buildroot.dtb - dtb (for flashing to dtb partition using dtb.img)
+Once the process is complete, everything ends up in `output/mesongxl_p241_32_kernel49/images`, with the following parts:
 
-## Flashing image
+* `boot.img` — the kernel
+* `u-boot.bin` — the U-Boot image
+* `rootfs.ext2` — the root filesystem
+* `gxl_p241_v2_1g_buildroot.dtb` — the DTB (flashed to the dtb partition through `dtb.img`)
 
-Second step is flashing everything to MMC. The esiest way is to use AmLogic flashing tool called *AmLogic USB Burning tool*:
+## Flash the image
+
+The second step is flashing everything to the MMC. The easiest way is to use the AmLogic flashing tool, the *AmLogic USB Burning Tool*:
 
 ![AmLogic USB Burning Tool](/images/s805x/2.png)
 
-You must choise builded full image.
+You have to select the full image you built.
 
-If everything fine you will see the the u-boot loading and kernel start after that
+If everything is fine, you will see U-Boot loading and the kernel starting after it:
 
 ![Image boot successful](/images/s805x/3.png)
 
-## Control/Test USB LED's
+## Control and test the LEDs
 
-In our case everything was booted, but some part need aditional verifying. First of this is ethernet leds not work. How to blink them with kernel?
+In our case everything booted, but some parts needed additional verification. The first one was the Ethernet LEDs, which did not work. How do we blink them from the kernel?
 
-![Ethernet LED'S not work](/images/s805x/4.png)
+![Ethernet LEDs do not work](/images/s805x/4.png)
 
-Thats pretty easy, change the ethernet LED'S with gpio state:
+That's pretty easy — drive the Ethernet LEDs through their GPIO state:
 
 ```bash
 # It can be re enabled manually using control GPIO commands:
@@ -72,13 +74,13 @@ Z8# echo 1 >/sys/class/gpio/gpio415/value
 Z8# echo 1 >/sys/class/gpio/gpio416/value
 ```
 
-We set gpio direction and writing 1 to value.
+We set the GPIO direction and write `1` to the value.
 
-![Ethernet LED'S works!](/images/s805x/5.png)
+![Ethernet LEDs work!](/images/s805x/5.png)
 
-## Fix battery time with enabling DS1307 driver
+## Fix the battery-backed clock by enabling the DS1307 driver
 
-Second problem is that battery clock is not working from start. Lets try to enable it. We are using DS1307 controller. So let's apply the followting patch:
+The second problem was that the battery clock did not work out of the box. Let's enable it. We use a DS1307 controller, so let's apply the following patch:
 
 ```diff
 diff --git a/arch/arm/configs/meson64_a32_defconfig b/arch/arm/configs/meson64_a32_defconfig
@@ -120,17 +122,17 @@ index 968ee40827bc..1367a6cebd19 100644
 +RTC_DRV_DS1307=y
 ```
 
-And now test with i2cdump:
+And now let's test it with `i2cdump`:
 
 ```bash
 i2cdump -f -y 0 0x68
 ```
 
-![Now the time can be readed. The value saved throuth the boot.](/images/s805x/6.png)
+![The time can now be read, and the value survives a reboot](/images/s805x/6.png)
 
 ## Sound testing
 
-We done it using speaker-test which is the part of the image
+We did this with `speaker-test`, which is part of the image:
 
 ```bash
 # via audio jack
@@ -141,13 +143,13 @@ Z8# speaker-test -c2 -D hw:0,1
 
 ## Load testing
 
-Let's load the system at 100%. One of the effective ways is with bzip2:
+Let's load the system to 100%. One of the most effective ways is with bzip2:
 
 ```bash
 Z8# (dd if=/dev/urandom | bzip2 -9 >> /dev/null &); (dd if=/dev/urandom | bzip2 -9 >> /dev/null &); (dd if=/dev/urandom | bzip2 -9 >> /dev/null &); (dd if=/dev/urandom | bzip2 -9 >> /dev/null &)
 ```
 
-Let's increase the load with multiple bzip proccesses and hw deconding playback:
+Let's increase the load further with more bzip2 processes plus hardware-decoded playback:
 
 ```bash
 Z8# (dd if=/dev/urandom | bzip2 -9 >> /dev/null &); (dd if=/dev/urandom | bzip2 -9 >> /dev/null &); (dd if=/dev/urandom | bzip2 -9 >> /dev/null &); (dd if=/dev/urandom | bzip2 -9 >> /dev/null &)
@@ -158,25 +160,25 @@ Z8# gst-launch-1.0 filesrc location=videoplayback.mp4 ! qtdemux ! h264parse ! am
 Z8# top
 ```
 
-The maximum power consumption we got is 0.46A
+The maximum power consumption we measured is 0.46 A.
 
-![0.46A Power consumption](/images/s805x/7.png)
+![0.46A power consumption](/images/s805x/7.png)
 
 ## Hardware accelerated decoding
 
-### Video h264 hardware accelerated
+### Hardware accelerated H264 video
 
 ```bash
 Z8# gst-launch-1.0 filesrc location=videoplayback.mp4 ! qtdemux ! h264parse ! amlvdec ! amlvsink
 ```
 
-gst-launch-1.0 will start video decoding, so you can see video decoding on stream, use
+`gst-launch-1.0` starts decoding the video, so you can watch the decoded stream. If the screen is occupied by the browser, free it first:
 
 ```bash
 Z8# killall chrome
 ```
 
-### Audio hardware accelerated
+### Hardware accelerated audio
 
 ```bash
 Z8# gst-launch-1.0 filesrc location=1.mp3 ! mpegaudioparse ! amladec ! audioconvert ! amlasink
@@ -188,13 +190,13 @@ Z8# gst-launch-1.0 filesrc location=1.mp3 ! mpegaudioparse ! amladec ! audioconv
 Z8# cat /sys/class/thermal/thermal_zone*/temp
 ```
 
-## Play audio file
+## Play an audio file
 
 ```bash
 Z8# aplay -D hw:0,0 -c2 -f cd flower_ok.wav
 ```
 
-## Mounting usb drives
+## Mounting USB drives
 
 ```bash
 Z8# mkdir /media/flash
@@ -204,4 +206,4 @@ Z8# cd /media/flash
 
 ## HDMI tests
 
-We just simply inseted monitor to verify that everything works :).
+We simply plugged a monitor in to verify that everything works :).

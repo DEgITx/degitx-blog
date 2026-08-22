@@ -15,13 +15,14 @@ tags:
   - "Linking"
 ---
 
-How to avoid usage of libgcc_s_seh-1.dll or libgcc_s_dw2-1.dll ? You need to include following link flags:
+How do you avoid depending on `libgcc_s_seh-1.dll` or `libgcc_s_dw2-1.dll`? You need to add the following link flags:
 
 ```bash
 -static-libgcc -static-libstdc++ -static
 ```
 
-In case of CMake:
+In the case of CMake:
+
 ```bash
 if(MINGW)
     SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++ -static")

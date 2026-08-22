@@ -1,5 +1,5 @@
 ---
-title: "Electron IPC communication. Render and main threads"
+title: "Electron IPC communication: main and renderer processes"
 seoTitle: "Electron IPC: main and renderer communication"
 description: "How to set up two-way IPC between Electron's main and renderer processes: ipcMain, ipcRenderer, webContents.send and synchronous vs asynchronous replies."
 pubDate: 2018-01-31
@@ -9,26 +9,26 @@ tags:
   - "IPC"
 ---
 
-What I often dislike about the standard documentation for many things is that seemingly identical items are separated by a huge layer of unnecessary information, or are generally so poorly documented that it’s faster to find the answer on Stack Overflow. So, if we know what Electron is, and roughly imagine that it consists of a main process controlled by node-js and a browser process (the so-called render process), how do we organize communication between 2 processes?
+What I often dislike about the official documentation is that closely related things are separated by a huge layer of unnecessary information, or are documented so poorly that it’s faster to find the answer on Stack Overflow. So, assuming we know what Electron is and roughly imagine that it consists of a main process driven by Node.js and a browser process (the so-called renderer process), how do we organize communication between the two?
 
-## Main process communication -> Render process (from main to render)
+## Main process -> renderer process (from main to renderer)
 
 ```js
 // main.process.js - send
 // mainWindow - this is BrowserWindow
-mainWindow.webContents.send('message', data); // отправка
+mainWindow.webContents.send('message', data); // send
 
-// render.process.js - recive
+// render.process.js - receive
 import { ipcRenderer } from 'electron';
 ipcRenderer.on('message', (event, data) => {
 // handle
 });
 ```
 
-## Communication between Render process -> Main process (from render to main)
+## Renderer process -> main process (from renderer to main)
 
 ```js
-// main.process.js - recive
+// main.process.js - receive
 import { ipcMain } from "electron";
 ipcMain.on('message', (event, data) => {
 // handle
@@ -39,10 +39,10 @@ import { ipcRenderer } from 'electron';
 ipcRenderer.send('message', data);
 ```
 
-## global object
+## The global object
 
-Why it was so difficult to collect this information in one place I don’t understand at all.
-There is also a useful shared global object that is available inside the renderer and is declared in the main process.
+Why it was so hard to collect this information in one place, I still don’t understand.
+There is also a useful shared global object: it is declared in the main process and is available inside the renderer.
 
 ```js
 // main.process.js
@@ -53,4 +53,4 @@ import { remote } from 'electron';
 remote.getGlobal('a') // 1
 ```
 
-Maybe someone will find this information useful
+Hopefully someone will find this useful.

@@ -10,7 +10,7 @@ tags:
   - "Windows"
 ---
 
-In some cases you want close the window on windows with ctrl+c combination, or invoke event for different reasons. On windows you can make such small program:
+Sometimes you want to close a window on Windows with the Ctrl+C combination, or to raise that event for some other reason. On Windows you can write a small program like this:
 
 ```cpp
 #include <windows.h>
@@ -34,4 +34,4 @@ int main(int argc, char* argv[])
 }
 ```
 
-As argument you can pass a pid or the window proccess. (You can get it via system monitor).
+As the argument you pass the PID of the target window's process (you can look it up in the system monitor).
