@@ -198,13 +198,21 @@ html.dark {
   margin-top: 0;
 }
 
-/* Anchor links injected by rehype-autolink-headings */
+/* Anchor links injected by the headingAnchors() Sätteri plugin.
+
+   The element is emitted empty and the "#" is drawn here: real text inside the
+   heading would be picked up by ctx.textContent() and leak into the generated
+   table of contents. */
 .prose .heading-anchor {
   margin-left: 0.4rem;
   color: var(--color-fg-subtle);
   text-decoration: none;
   opacity: 0;
   transition: opacity 0.15s var(--ease-out-quint);
+}
+
+.prose .heading-anchor::after {
+  content: '#';
 }
 
 .prose :is(h2, h3, h4):hover .heading-anchor,
