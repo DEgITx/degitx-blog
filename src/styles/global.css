@@ -39,6 +39,22 @@
 :root {
   color-scheme: light;
   --shiki-block-bg: oklch(97.2% 0.005 250);
+
+  /* Categorical series palette for in-article charts. Fixed slot order: take
+     --chart-1 first and work up, and give one slot to one subject for the whole
+     article so a reader can follow it from chart to chart. The order is the
+     colour-blind-safe one — adjacent slots are the pairs most likely to sit
+     next to each other, and they are the pairs that were checked. Hex rather
+     than OKLCH because these are chosen steps, not a lightness inversion of
+     each other: the dark column is re-stepped for the dark surface. */
+  --chart-1: #2a78d6;
+  --chart-2: #eb6834;
+  --chart-3: #1baf7a;
+  --chart-4: #eda100;
+  --chart-5: #e87ba4;
+  --chart-6: #008300;
+  --chart-7: #4a3aa7;
+  --chart-8: #e34948;
 }
 
 html.dark {
@@ -60,6 +76,15 @@ html.dark {
   --color-accent-fg: oklch(17% 0.02 260);
 
   --shiki-block-bg: oklch(18.5% 0.015 260);
+
+  --chart-1: #3987e5;
+  --chart-2: #d95926;
+  --chart-3: #199e70;
+  --chart-4: #c98500;
+  --chart-5: #d55181;
+  --chart-6: #008300;
+  --chart-7: #9085e9;
+  --chart-8: #e66767;
 }
 
 /* ---------------------------------------------------------------------------
@@ -288,6 +313,31 @@ html.dark {
 
 .prose figure {
   margin-block: 2em;
+}
+
+/* A chart is inline SVG rather than an <img>, so it inherits the page's type
+   and colour tokens and follows the theme toggle instead of the OS setting.
+   Wrap one in <figure class="chart"> and let it scroll on narrow screens. */
+.prose figure.chart {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 1.25rem 1.25rem 1rem;
+  overflow-x: auto;
+}
+
+.prose figure.chart svg {
+  display: block;
+  width: 100%;
+  min-width: 30rem;
+  height: auto;
+}
+
+.prose figure.chart figcaption {
+  margin-top: 1rem;
+  text-align: left;
+  border-top: 1px solid var(--color-border);
+  padding-top: 0.75rem;
 }
 
 .prose figcaption {
