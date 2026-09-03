@@ -1,7 +1,7 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", ".oldsite"],
+  "exclude": ["dist", ".oldsite", "reference"],
   "compilerOptions": {
     "strictNullChecks": true,
     "allowJs": true
